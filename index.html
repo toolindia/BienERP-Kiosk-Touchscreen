@@ -63,7 +63,7 @@
       <div>
         <div class="flex items-center gap-2">
           <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-white">BienERP <span class="text-sky-400">HygieneIQ</span></h1>
-          <span class="px-2 py-0.5 text-[10px] font-bold tracking-widest uppercase bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-full">Kiosk v3.2</span>
+          <span class="px-2 py-0.5 text-[10px] font-bold tracking-widest uppercase bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-full">Voice v3.3</span>
         </div>
         <p class="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -72,8 +72,8 @@
       </div>
     </div>
     <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800">
-      <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-      Touchless Sync Live
+      <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path></svg>
+      Voice &amp; Sheet Synced
     </div>
   </header>
 
@@ -91,7 +91,7 @@
       <!-- Cinematic Avatar Mode Container -->
       <div id="avatarRatingContainer" class="grid grid-cols-5 gap-3 md:gap-5 mb-8">
         <!-- 1: Disastrous -->
-        <button type="button" onclick="selectRating(1, 'Disastrous', '#ef4444')" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800" style="--glow-color: rgba(239,68,68,0.5)">
+        <button type="button" onclick="selectRating(1, 'Disastrous', '#ef4444', this)" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800" style="--glow-color: rgba(239,68,68,0.5)">
           <svg class="w-12 h-12 md:w-16 md:h-16 text-rose-500 drop-shadow-[0_0_12px_rgba(244,63,94,0.4)]" viewBox="0 0 64 64" fill="none">
             <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3.5" fill="rgba(244,63,94,0.06)"/>
             <path d="M22 26C24 24 28 24 30 26M34 26C36 24 40 24 42 26" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
@@ -103,7 +103,7 @@
         </button>
 
         <!-- 2: Needs Work -->
-        <button type="button" onclick="selectRating(2, 'Needs Work', '#f97316')" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800" style="--glow-color: rgba(249,115,22,0.5)">
+        <button type="button" onclick="selectRating(2, 'Needs Work', '#f97316', this)" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800" style="--glow-color: rgba(249,115,22,0.5)">
           <svg class="w-12 h-12 md:w-16 md:h-16 text-amber-500 drop-shadow-[0_0_12px_rgba(245,158,11,0.4)]" viewBox="0 0 64 64" fill="none">
             <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3.5" fill="rgba(245,158,11,0.06)"/>
             <ellipse cx="24" cy="26" rx="2.5" ry="3" fill="currentColor"/>
@@ -113,8 +113,8 @@
           <span class="mt-3 text-xs md:text-sm font-bold text-slate-300">Poor</span>
         </button>
 
-        <!-- 3: Average -->
-        <button type="button" onclick="selectRating(3, 'Fair', '#eab308')" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800" style="--glow-color: rgba(234,179,8,0.5)">
+        <!-- 3: Fair -->
+        <button type="button" onclick="selectRating(3, 'Fair', '#eab308', this)" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800" style="--glow-color: rgba(234,179,8,0.5)">
           <svg class="w-12 h-12 md:w-16 md:h-16 text-yellow-400 drop-shadow-[0_0_12px_rgba(250,204,21,0.4)]" viewBox="0 0 64 64" fill="none">
             <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3.5" fill="rgba(250,204,21,0.06)"/>
             <circle cx="23" cy="27" r="2.8" fill="currentColor"/>
@@ -124,8 +124,8 @@
           <span class="mt-3 text-xs md:text-sm font-bold text-slate-300">Fair</span>
         </button>
 
-        <!-- 4: Fresh & Good -->
-        <button type="button" onclick="selectRating(4, 'Clean & Fresh', '#22c55e')" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800" style="--glow-color: rgba(34,197,94,0.5)">
+        <!-- 4: Good -->
+        <button type="button" onclick="selectRating(4, 'Clean & Fresh', '#22c55e', this)" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800" style="--glow-color: rgba(34,197,94,0.5)">
           <svg class="w-12 h-12 md:w-16 md:h-16 text-emerald-400 drop-shadow-[0_0_12px_rgba(52,211,153,0.4)]" viewBox="0 0 64 64" fill="none">
             <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3.5" fill="rgba(52,211,153,0.06)"/>
             <path d="M21 27C21 24 26 24 26 27M38 27C38 24 43 24 43 27" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
@@ -135,7 +135,7 @@
         </button>
 
         <!-- 5: Sparkling Pristine -->
-        <button type="button" onclick="selectRating(5, 'Sparkling Clean', '#00d2ff')" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800" style="--glow-color: rgba(0,210,255,0.5)">
+        <button type="button" onclick="selectRating(5, 'Sparkling Clean', '#00d2ff', this)" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800" style="--glow-color: rgba(0,210,255,0.5)">
           <svg class="w-12 h-12 md:w-16 md:h-16 text-cyan-400 drop-shadow-[0_0_15px_rgba(0,210,255,0.6)]" viewBox="0 0 64 64" fill="none">
             <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3.5" fill="rgba(0,210,255,0.08)"/>
             <path d="M20 28C22 22 27 22 28 28M36 28C38 22 43 22 44 28" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
@@ -144,13 +144,6 @@
           </svg>
           <span class="mt-3 text-xs md:text-sm font-bold text-slate-300">Pristine</span>
         </button>
-      </div>
-
-      <!-- Alternate 1-10 Scale Container (Admin Controlled) -->
-      <div id="tenScaleContainer" class="hidden mb-8">
-        <div class="grid grid-cols-5 md:grid-cols-10 gap-2">
-          <!-- Dynamically filled with JS buttons 1 to 10 -->
-        </div>
       </div>
 
       <!-- Quick Feedback Observation Tags -->
@@ -236,47 +229,49 @@
     let selectedRatingValue = 5;
     let selectedRatingLabel = "Sparkling Clean";
     let selectedTags = [];
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    // Sound Synthesizer
-    function playHarmonicSound(type) {
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
+    // Preload Speech Engine to avoid any initial click delay
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
 
-      if (type === 'pos') {
-        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-        osc.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.15); // G5
-        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.35);
-      } else {
-        osc.frequency.setValueAtTime(320, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(180, audioCtx.currentTime + 0.2);
-        gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.3);
+    // High-Fidelity Voice Synthesizer
+    function speakVoice(text, isPositive) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Stop any pending utterance
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        
+        if (isPositive) {
+          utterance.pitch = 1.15; // Polite & cheerful
+          utterance.rate = 1.0;
+        } else {
+          utterance.pitch = 0.9;  // Gentle & sincere
+          utterance.rate = 0.92;
+        }
+
+        window.speechSynthesis.speak(utterance);
       }
     }
 
-    function selectRating(val, label, colorHex) {
+    function selectRating(val, label, colorHex, btnElement) {
       selectedRatingValue = val;
       selectedRatingLabel = label;
       
       const buttons = document.querySelectorAll('.avatar-btn');
       buttons.forEach(b => b.classList.remove('active'));
-      event.currentTarget.classList.add('active');
+      if (btnElement) {
+        btnElement.classList.add('active');
+      }
 
+      // Voice triggers: 4 & 5 => "Thank you", 1, 2 & 3 => "Sorry"
       if (val >= 4) {
-        playHarmonicSound('pos');
+        speakVoice("Thank you!", true);
       } else {
-        playHarmonicSound('neg');
+        speakVoice("Sorry for the inconvenience!", false);
       }
     }
 
@@ -325,7 +320,7 @@
         phone: document.getElementById('patronPhone').value.trim() || "Not Provided",
         address: document.getElementById('patronAddress').value.trim() || "Phoenix Mall L2 East",
         comments: document.getElementById('patronComment').value.trim() || "No additional comments",
-        system: "BienERP Washroom Suite v3.2"
+        system: "BienERP Washroom Suite v3.3"
       };
 
       // 1. Save to Local Backup Registry for Instant Analytics
