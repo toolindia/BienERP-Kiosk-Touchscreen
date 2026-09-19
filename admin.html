@@ -1,0 +1,77 @@
+/**
+ * BienERP Smart Washroom Feedback Suite - Google Apps Script Backend
+ * Deploy as: Web App (Execute as: Me, Who has access: Anyone)
+ */
+
+function doPost(e) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getActiveSheet();
+
+    // Auto-create and format header row on first submission
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        "Record ID",
+        "Timestamp",
+        "Mall Name",
+        "Washroom Zone",
+        "Rating Given",
+        "Scale Max",
+        "Customer Experience",
+        "Selected Tags",
+        "Customer Comment",
+        "Patron Name",
+        "Patron Phone",
+        "Patron Address / City",
+        "Duty Attendant",
+        "Resolution Status"
+      ]);
+      
+      // Professional header formatting
+      var headerRange = sheet.getRange(1, 1, 1, 14);
+      headerRange.setBackground("#1e293b");
+      headerRange.setFontColor("#ffffff");
+      headerRange.setFontWeight("bold");
+      headerRange.setFontSize(10);
+      sheet.setFrozenRows(1);
+    }
+
+    var data = JSON.parse(e.postData.contents);
+
+    sheet.appendRow([
+      data.id || "FB-" + new Date().getTime(),
+      data.timestamp || new Date().toLocaleTimeString(),
+      data.mallName || "Grand Galleria Mall",
+      data.washroomZone || "Restroom Zone",
+      data.rating || 10,
+      data.maxRating || 10,
+      data.moodTitle || "Normal",
+      (data.tags && data.tags.length > 0) ? data.tags.join(", ") : "None Selected",
+      data.comment || "",
+      data.patronName || "Anonymous Visitor",
+      data.patronPhone || "Not Provided",
+      data.patronAddress || "Not Provided",
+      data.dutyAttendant || "Shift Incharge",
+      data.status || "Normal"
+    ]);
+
+    return ContentService.createTextOutput(JSON.stringify({
+      "status": "success",
+      "message": "Feedback safely recorded in BienERP Sheet"
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      "status": "error",
+      "message": error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService.createTextOutput(JSON.stringify({
+    "status": "online",
+    "service": "BienERP Washroom Feedback Webhook",
+    "version": "2.4.0"
+  })).setMimeType(ContentService.MimeType.JSON);
+}
