@@ -1,423 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BienERP Admin & AMC Control Master</title>
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BienERP | Master Admin &amp; AMC Control</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #080c14;
-      color: #f8fafc;
-    }
-    .glass-box {
-      background: rgba(16, 23, 38, 0.8);
-      backdrop-filter: blur(25px);
+    * { font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: #060913; color: #f1f5f9; }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+<body class="min-h-screen p-4 md:p-8">
 
-  <!-- Top Global Bar -->
-  <header class="w-full px-6 py-4 border-b border-white/10 bg-slate-950/70 backdrop-blur-lg flex items-center justify-between sticky top-0 z-40">
-    <div class="flex items-center space-x-3.5">
-      <img id="adminLogo" src="https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg" alt="Logo" class="h-9 w-9 rounded-xl object-cover ring-2 ring-blue-500/40">
+  <!-- Admin Navigation -->
+  <header class="max-w-6xl mx-auto flex items-center justify-between pb-6 border-b border-slate-800 mb-8">
+    <div class="flex items-center gap-4">
+      <img src="https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg" alt="Logo" class="w-12 h-12 rounded-xl object-cover border border-slate-700" />
       <div>
-        <div class="flex items-center space-x-2">
-          <span class="font-extrabold text-base tracking-tight text-white">BienERP SuperAdmin</span>
-          <span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">AMC Console</span>
-        </div>
-        <p class="text-[11px] text-slate-400 font-medium">Facility Kiosk Styling, Rating Rules & AppsScript Webhooks</p>
+        <h1 class="text-2xl font-bold text-white">System Admin &amp; AMC Operations</h1>
+        <p class="text-xs text-slate-400">BienERP Global Infrastructure Controller</p>
       </div>
     </div>
-
-    <div class="flex items-center space-x-3">
-      <a href="index.html" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
-        <i data-lucide="tablet" class="w-3.5 h-3.5 text-blue-400"></i>
-        <span>Kiosk View</span>
-      </a>
-      <a href="reports.html" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
-        <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-blue-400"></i>
-        <span>Reports View</span>
-      </a>
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200">Kiosk View</a>
+      <a href="reports.html" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200">Reports Portal</a>
     </div>
   </header>
 
-  <!-- Content Form -->
-  <main class="max-w-6xl w-full mx-auto p-4 sm:p-8 space-y-6 flex-1">
+  <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
 
-    <!-- Header Banner -->
-    <div class="glass-box p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-l-blue-500">
+    <!-- AMC License & SLA Card -->
+    <div class="glass-card p-6 rounded-2xl md:col-span-1 border-t-4 border-t-sky-500 flex flex-col justify-between">
       <div>
-        <div class="flex items-center space-x-2">
-          <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Enterprise Central Administration</span>
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs font-bold uppercase tracking-wider text-sky-400">SLA Contract Status</span>
+          <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold">Active AMC</span>
         </div>
-        <h1 class="text-2xl font-black text-white tracking-tight mt-0.5">Facility Master & AMC Service Center</h1>
-        <p class="text-xs text-slate-400 mt-1">Configure whether customers see 1-10 numerical buttons, classic stars, or cinematic vector avatars. Changes instantly reflect on `index.html`.</p>
+        <h3 class="text-xl font-bold text-white mb-2">BienERP Gold Facility AMC</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Full hardware, software, and kiosk endpoint support coverage. Guaranteed 99.9% uptime with immediate incident dispatch.
+        </p>
+
+        <div class="mt-6 space-y-3 text-xs">
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Contract ID:</span>
+            <span class="font-mono text-white">AMC-2026-BIE-984</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Next Service Audit:</span>
+            <span class="text-amber-400 font-semibold">15 Nov 2026</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-800 pb-2">
+            <span class="text-slate-400">Expiry Date:</span>
+            <span class="text-white">31 March 2027</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Emergency Support:</span>
+            <span class="text-sky-400 font-bold">+91 1800-BIEN-ERP</span>
+          </div>
+        </div>
       </div>
-      <div class="flex items-center space-x-2 self-start md:self-auto">
-        <span class="px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold flex items-center gap-1.5">
-          <i data-lucide="check-circle" class="w-4 h-4"></i>
-          <span>AMC Contract: Active 2027</span>
-        </span>
-      </div>
+
+      <button onclick="alert('Audit Request Submitted. A certified BienERP engineer will contact you shortly.')" class="mt-6 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition-all">
+        Request AMC Engineer Visit
+      </button>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-      <!-- Left Column: AMC & IoT Modules -->
-      <div class="lg:col-span-1 space-y-6">
-        
-        <!-- AMC Service Details -->
-        <div class="glass-box p-6 rounded-3xl space-y-4">
-          <div class="flex items-center space-x-2.5 border-b border-white/10 pb-3">
-            <div class="p-2 rounded-xl bg-blue-500/10 text-blue-400">
-              <i data-lucide="file-check-2" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-bold text-white">Annual Maintenance (AMC)</h3>
-              <p class="text-[11px] text-slate-400">BienERP Hardware & Cloud SLA</p>
-            </div>
-          </div>
-
-          <div class="space-y-3 text-xs">
-            <div class="flex justify-between py-1 border-b border-white/5">
-              <span class="text-slate-400">Client Organization:</span>
-              <span class="font-semibold text-white">Grand Galleria Retail Ltd.</span>
-            </div>
-            <div class="flex justify-between py-1 border-b border-white/5">
-              <span class="text-slate-400">Contract Reference:</span>
-              <span class="font-mono text-blue-400">AMC-BIEN-2026-8801</span>
-            </div>
-            <div class="flex justify-between py-1 border-b border-white/5">
-              <span class="text-slate-400">Validity Period:</span>
-              <span class="font-semibold text-emerald-400">Oct 01, 2025 - Sep 30, 2027</span>
-            </div>
-            <div class="flex justify-between py-1 border-b border-white/5">
-              <span class="text-slate-400">Response SLA:</span>
-              <span class="font-semibold text-slate-200">&lt; 15 Mins on Alert</span>
-            </div>
-            <div class="flex justify-between py-1 border-b border-white/5">
-              <span class="text-slate-400">Active Tablets / Kiosks:</span>
-              <span class="font-semibold text-slate-200">14 Kiosks + 20 Smart Sensors</span>
-            </div>
-          </div>
-
-          <button onclick="downloadAmcDocument()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-semibold text-slate-300 transition flex items-center justify-center gap-1.5">
-            <i data-lucide="file-down" class="w-4 h-4"></i>
-            <span>Download AMC SLA Certificate</span>
-          </button>
-        </div>
-
-        <!-- IoT Device Toggles -->
-        <div class="glass-box p-6 rounded-3xl space-y-3.5">
-          <h3 class="text-sm font-bold text-white flex items-center gap-2">
-            <i data-lucide="cpu" class="w-4 h-4 text-purple-400"></i>
-            <span>Connected Facility IoT Services</span>
-          </h3>
-
-          <label class="flex items-center justify-between p-3 rounded-2xl bg-slate-900/60 border border-white/5 cursor-pointer text-xs">
-            <div>
-              <p class="font-semibold text-white">Auto Aerosol Fragrance Mist</p>
-              <p class="text-[10px] text-slate-400">Triggers scent burst when rating &lt;= 4</p>
-            </div>
-            <input type="checkbox" checked class="w-4 h-4 rounded text-blue-600">
-          </label>
-
-          <label class="flex items-center justify-between p-3 rounded-2xl bg-slate-900/60 border border-white/5 cursor-pointer text-xs">
-            <div>
-              <p class="font-semibold text-white">Footfall Threshold Sensor</p>
-              <p class="text-[10px] text-slate-400">Alerts housekeeper every 80 visits</p>
-            </div>
-            <input type="checkbox" checked class="w-4 h-4 rounded text-blue-600">
-          </label>
-
-          <label class="flex items-center justify-between p-3 rounded-2xl bg-slate-900/60 border border-white/5 cursor-pointer text-xs">
-            <div>
-              <p class="font-semibold text-white">Soap / Tissue Ultrasonic Depth</p>
-              <p class="text-[10px] text-slate-400">Telemetry synced with BienERP Cloud</p>
-            </div>
-            <input type="checkbox" class="w-4 h-4 rounded text-blue-600">
-          </label>
-        </div>
-
+    <!-- Configuration Settings Form -->
+    <div class="glass-card p-6 rounded-2xl md:col-span-2 space-y-6">
+      <div>
+        <h3 class="text-lg font-bold text-white">Kiosk Customization &amp; Webhook Setup</h3>
+        <p class="text-xs text-slate-400">Configure kiosk headers, facility names, and check Apps Script connectivity.</p>
       </div>
 
-      <!-- Right Column: Live Kiosk Customizer & Google Apps Script Setup -->
-      <div class="lg:col-span-2 space-y-6">
-
-        <!-- Kiosk Rating Engine Mode (Core User Requirement) -->
-        <div class="glass-box p-6 rounded-3xl space-y-4">
-          <div class="flex items-center justify-between border-b border-white/10 pb-3">
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-              <i data-lucide="sliders" class="w-4 h-4 text-blue-400"></i>
-              <span>Customer Rating Interface Mode Selection</span>
-            </h3>
-            <span class="text-[11px] text-blue-400 font-semibold">Live on index.html</span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            
-            <!-- Option 1: 1-10 Scale -->
-            <label class="p-4 rounded-2xl border border-white/10 hover:border-blue-500 bg-slate-900/60 flex flex-col justify-between cursor-pointer transition">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-white">1 to 10 Scale</span>
-                <input type="radio" name="ratingModeOption" value="10" class="text-blue-600">
-              </div>
-              <p class="text-[11px] text-slate-400 mt-2">Comprehensive numerical grid with color graduations.</p>
-            </label>
-
-            <!-- Option 2: 1-5 Stars -->
-            <label class="p-4 rounded-2xl border border-white/10 hover:border-blue-500 bg-slate-900/60 flex flex-col justify-between cursor-pointer transition">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-white">1 to 5 Stars</span>
-                <input type="radio" name="ratingModeOption" value="5" class="text-blue-600">
-              </div>
-              <p class="text-[11px] text-slate-400 mt-2">Familiar 5-star touch buttons for fast ratings.</p>
-            </label>
-
-            <!-- Option 3: Cinematic Vector Avatars -->
-            <label class="p-4 rounded-2xl border border-white/10 hover:border-blue-500 bg-slate-900/60 flex flex-col justify-between cursor-pointer transition">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-white">Cinematic Avatars</span>
-                <input type="radio" name="ratingModeOption" value="avatars" class="text-blue-600">
-              </div>
-              <p class="text-[11px] text-slate-400 mt-2">Custom glowing vector avatar faces (Unacceptable to Exemplary).</p>
-            </label>
-
-          </div>
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Facility Name &amp; Washroom Zone Label</label>
+          <input id="cfgLocation" type="text" value="Phoenix Grand Mall • Level 2 Washroom East" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-white focus:border-sky-500 focus:outline-none">
         </div>
 
-        <!-- Visual Branding & Theme Customizer -->
-        <div class="glass-box p-6 rounded-3xl space-y-4">
-          <h3 class="text-sm font-bold text-white flex items-center gap-2">
-            <i data-lucide="palette" class="w-4 h-4 text-emerald-400"></i>
-            <span>Branding & Visual Palette Controls</span>
-          </h3>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div class="space-y-1">
-              <label class="font-semibold text-slate-300">Mall / Facility Display Name</label>
-              <input type="text" id="adminMallName" value="Grand Galleria Mall" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white outline-none focus:border-blue-500">
-            </div>
-
-            <div class="space-y-1">
-              <label class="font-semibold text-slate-300">Default Restroom Location</label>
-              <input type="text" id="adminWashroomLoc" value="Floor 2 • West Wing Executive Restroom" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white outline-none focus:border-blue-500">
-            </div>
-
-            <div class="space-y-1 sm:col-span-2">
-              <label class="font-semibold text-slate-300">Logo URL</label>
-              <input type="text" id="adminLogoUrl" value="https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white outline-none focus:border-blue-500">
-            </div>
-
-            <!-- Custom Theme Accent Color -->
-            <div class="space-y-1 sm:col-span-2">
-              <label class="font-semibold text-slate-300">Theme Accent Color</label>
-              <div class="flex items-center space-x-3">
-                <input type="color" id="adminThemeColor" value="#2563eb" class="h-10 w-14 rounded-xl bg-transparent cursor-pointer border border-white/10">
-                <span class="text-slate-400 text-xs">Choose primary brand glow color for the tablet kiosk.</span>
-              </div>
-            </div>
-          </div>
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Google Apps Script Live Webhook URL</label>
+          <input id="cfgUrl" type="text" value="https://script.google.com/macros/s/AKfycbzBoFYUaSD4y4h1resqxeuyDIgBj9FEVseWDRPexhYRGhZkySXZeAvnT-HY_TQKmvB1/exec" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 font-mono text-sky-400 focus:border-sky-500 focus:outline-none">
         </div>
 
-        <!-- Observation Chips Editor -->
-        <div class="glass-box p-6 rounded-3xl space-y-3">
-          <label class="text-xs font-bold uppercase tracking-wider text-slate-300">Observation Chips Editor</label>
-          <div class="flex flex-wrap gap-2" id="adminChipsEditor">
-            <!-- Rendered by JS -->
-          </div>
-          <div class="flex items-center space-x-2 pt-2">
-            <input type="text" id="newChipInput" placeholder="Add custom tag (e.g. Sensor Faucet Faulty)" class="px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs text-white flex-1 outline-none focus:border-blue-500">
-            <button onclick="addCustomChip()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white">Add Tag</button>
-          </div>
-        </div>
-
-        <!-- Google Apps Script Webhook Master -->
-        <div class="glass-box p-6 rounded-3xl space-y-4">
-          <div class="flex items-center justify-between border-b border-white/10 pb-3">
-            <h3 class="text-sm font-bold text-white flex items-center gap-2">
-              <i data-lucide="webhook" class="w-4 h-4 text-emerald-400"></i>
-              <span>Google Apps Script Webhook Integration</span>
-            </h3>
-            <span class="text-[11px] text-slate-400">Direct Google Sheets Sync</span>
-          </div>
-
-          <div class="space-y-2 text-xs">
-            <label class="font-semibold text-slate-300">Google Apps Script Web App Endpoint URL</label>
-            <div class="flex items-center space-x-2">
-              <input type="url" id="webhookInput" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white font-mono outline-none focus:border-emerald-500">
-              <button onclick="testWebhookPing()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold whitespace-nowrap flex items-center gap-1.5">
-                <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-                <span>Test Ping</span>
-              </button>
-            </div>
-            <p class="text-[11px] text-slate-400">When visitors submit on index.html, ratings and patron contact data automatically append to your Google Sheet without a backend server.</p>
-          </div>
-        </div>
-
-        <!-- Action Save Button -->
-        <div class="flex justify-end">
-          <button onclick="saveAdminSettings()" class="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-sm tracking-wide shadow-xl shadow-blue-600/30 flex items-center space-x-2 transition">
-            <i data-lucide="check" class="w-4 h-4"></i>
-            <span>Save & Apply Settings Globally</span>
+        <div class="pt-2">
+          <button onclick="testWebhook()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-400 border border-sky-500/20 font-bold flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            Send Test Ping to Google Apps Script
           </button>
+          <span id="testStatus" class="ml-2 font-bold text-[11px]"></span>
         </div>
-
       </div>
 
+      <!-- Action Buttons -->
+      <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+        <button onclick="clearCache()" class="text-rose-400 hover:text-rose-300 font-bold text-xs">
+          Clear Local Feedback Cache
+        </button>
+        <button onclick="saveAdminConfig()" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg transition-all">
+          Save Configuration
+        </button>
+      </div>
     </div>
 
   </main>
 
-  <footer class="w-full px-6 py-4 border-t border-white/10 bg-slate-950/70 text-xs text-slate-500 text-center">
-    BienERP Administrator Console • Changes synchronize instantly across all devices via localStorage
-  </footer>
-
   <script>
-    const CONFIG_KEY = 'BIEN_SYSTEM_CONFIG';
+    function saveAdminConfig() {
+      const config = {
+        locationName: document.getElementById('cfgLocation').value.trim(),
+        scriptUrl: document.getElementById('cfgUrl').value.trim()
+      };
+      localStorage.setItem('bienerp_admin_config', JSON.stringify(config));
+      alert("Configuration Saved! index.html will now reflect your custom location settings.");
+    }
 
-    const DefaultConfig = {
-      mallName: 'Grand Galleria Mall',
-      washroomLocation: 'Floor 2 • West Wing Executive Restroom',
-      ratingMode: '10',
-      logoUrl: 'https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg',
-      webhookUrl: '',
-      tags: ['Spotless Clean', 'Fragrant & Fresh', 'Soap Dispenser Full', 'Dry Slip-Free Floor', 'High Water Pressure', 'Needs Tissue Refill', 'Wet Floor / Spill', 'Bad Odor', 'Flush Issue'],
-      themeColor: '#2563eb'
-    };
+    async function testWebhook() {
+      const url = document.getElementById('cfgUrl').value.trim();
+      const statusEl = document.getElementById('testStatus');
+      statusEl.textContent = "Testing...";
+      statusEl.className = "text-sky-400 font-bold";
 
-    let AppConfig = Object.assign({}, DefaultConfig);
+      const testPayload = {
+        timestamp: new Date().toISOString(),
+        score: 5,
+        label: "Sparkling Clean",
+        issues: "Diagnostic Ping",
+        name: "Admin Tester",
+        phone: "9999999999",
+        address: "HQ Server Test",
+        comments: "Automated Connectivity Check",
+        system: "BienERP Washroom Suite v3.2 [Test]"
+      };
 
-    function initAdmin() {
       try {
-        const saved = localStorage.getItem(CONFIG_KEY);
-        if (saved) {
-          AppConfig = Object.assign({}, DefaultConfig, JSON.parse(saved));
-        }
-      } catch (e) {
-        console.warn(e);
-      }
-
-      document.getElementById('adminMallName').value = AppConfig.mallName;
-      document.getElementById('adminWashroomLoc').value = AppConfig.washroomLocation;
-      document.getElementById('adminLogoUrl').value = AppConfig.logoUrl;
-      document.getElementById('webhookInput').value = AppConfig.webhookUrl;
-      document.getElementById('adminThemeColor').value = AppConfig.themeColor || '#2563eb';
-
-      const radio = document.querySelector(`input[name="ratingModeOption"][value="${AppConfig.ratingMode}"]`);
-      if (radio) radio.checked = true;
-
-      renderAdminChips();
-      lucide.createIcons();
-    }
-
-    function renderAdminChips() {
-      const container = document.getElementById('adminChipsEditor');
-      container.innerHTML = '';
-      AppConfig.tags.forEach((tag, idx) => {
-        const chip = document.createElement('div');
-        chip.className = 'px-3 py-1.5 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-200 flex items-center space-x-2';
-        chip.innerHTML = `
-          <span>${tag}</span>
-          <button onclick="removeChip(${idx})" class="text-slate-500 hover:text-red-400"><i data-lucide="x" class="w-3 h-3"></i></button>
-        `;
-        container.appendChild(chip);
-      });
-      lucide.createIcons();
-    }
-
-    function removeChip(index) {
-      AppConfig.tags.splice(index, 1);
-      renderAdminChips();
-    }
-
-    function addCustomChip() {
-      const input = document.getElementById('newChipInput');
-      const val = input.value.trim();
-      if (val && !AppConfig.tags.includes(val)) {
-        AppConfig.tags.push(val);
-        input.value = '';
-        renderAdminChips();
+        await fetch(url, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(testPayload)
+        });
+        statusEl.textContent = "Ping transmitted successfully! Check your Google Sheet.";
+        statusEl.className = "text-emerald-400 font-bold";
+      } catch (err) {
+        statusEl.textContent = "Failed to reach endpoint.";
+        statusEl.className = "text-rose-400 font-bold";
       }
     }
 
-    function saveAdminSettings() {
-      const mall = document.getElementById('adminMallName').value.trim();
-      const loc = document.getElementById('adminWashroomLoc').value.trim();
-      const logo = document.getElementById('adminLogoUrl').value.trim();
-      const webhook = document.getElementById('webhookInput').value.trim();
-      const theme = document.getElementById('adminThemeColor').value;
-      const selectedMode = document.querySelector('input[name="ratingModeOption"]:checked')?.value || '10';
-
-      AppConfig.mallName = mall;
-      AppConfig.washroomLocation = loc;
-      AppConfig.logoUrl = logo;
-      AppConfig.webhookUrl = webhook;
-      AppConfig.themeColor = theme;
-      AppConfig.ratingMode = selectedMode;
-
-      localStorage.setItem(CONFIG_KEY, JSON.stringify(AppConfig));
-      showToast('Settings saved successfully. All tablet kiosks updated.');
-    }
-
-    function testWebhookPing() {
-      const url = document.getElementById('webhookInput').value.trim();
-      if (!url) {
-        alert('Please paste your Google Apps Script Web App URL first.');
-        return;
+    function clearCache() {
+      if (confirm("Are you sure you want to clear local records? (Google Sheet data will NOT be deleted).")) {
+        localStorage.removeItem('bienerp_feedback_data');
+        alert("Local cache reset done.");
       }
-      AppConfig.webhookUrl = url;
-      localStorage.setItem(CONFIG_KEY, JSON.stringify(AppConfig));
-
-      fetch(url, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id: 'TEST-PING',
-          timestamp: new Date().toLocaleTimeString(),
-          fullDate: new Date().toISOString(),
-          mallName: AppConfig.mallName,
-          washroomZone: AppConfig.washroomLocation,
-          rating: 10,
-          maxRating: 10,
-          moodTitle: 'Diagnostics Ping',
-          tags: ['Verification Diagnostic'],
-          comment: 'BienERP System Self-Test',
-          patronName: 'BienERP Automated Diagnostic',
-          patronPhone: '+91 00000 00000',
-          patronAddress: 'Headquarters Server',
-          status: 'Diagnostic Passed'
-        })
-      });
-
-      showToast('Test packet sent to Google Apps Script. Check your Google Sheet!');
     }
 
-    function downloadAmcDocument() {
-      showToast('AMC SLA Document AMC-BIEN-2026-8801 downloaded.');
-    }
-
-    function showToast(msg) {
-      const toast = document.createElement('div');
-      toast.className = 'fixed bottom-6 right-6 bg-blue-600 text-white font-semibold text-xs px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2 z-50';
-      toast.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i><span>${msg}</span>`;
-      document.body.appendChild(toast);
-      lucide.createIcons();
-      setTimeout(() => toast.remove(), 3500);
-    }
-
-    window.addEventListener('DOMContentLoaded', initAdmin);
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedConfig = localStorage.getItem('bienerp_admin_config');
+      if (savedConfig) {
+        try {
+          const cfg = JSON.parse(savedConfig);
+          if (cfg.locationName) document.getElementById('cfgLocation').value = cfg.locationName;
+          if (cfg.scriptUrl) document.getElementById('cfgUrl').value = cfg.scriptUrl;
+        } catch(e) {}
+      }
+    });
   </script>
 </body>
 </html>
