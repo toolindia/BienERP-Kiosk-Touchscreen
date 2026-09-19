@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BienERP Operations & Hygiene Reports</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0b0f19;
+      color: #f1f5f9;
+    }
+    .glass-card {
+      background: rgba(18, 24, 38, 0.75);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+
+  <!-- Top Global Bar -->
+  <header class="w-full px-6 py-4 border-b border-white/10 bg-slate-950/70 backdrop-blur-lg flex items-center justify-between sticky top-0 z-40">
+    <div class="flex items-center space-x-3.5">
+      <img id="reportsLogo" src="https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg" alt="Logo" class="h-9 w-9 rounded-xl object-cover ring-2 ring-blue-500/30">
+      <div>
+        <div class="flex items-center space-x-2">
+          <span class="font-extrabold text-base tracking-tight text-white">BienERP Telemetry</span>
+          <span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">Facility Intelligence</span>
+        </div>
+        <p class="text-[11px] text-slate-400 font-medium">Washroom Hygiene & Customer Satisfaction Intelligence</p>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-2.5">
+      <a href="index.html" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+        <i data-lucide="tablet" class="w-3.5 h-3.5 text-blue-400"></i>
+        <span>Kiosk View</span>
+      </a>
+      <a href="admin.html" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-400"></i>
+        <span>Admin Console</span>
+      </a>
+      <button onclick="syncAndRefreshData()" class="p-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 text-xs font-semibold transition flex items-center gap-1">
+        <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Analytics View -->
+  <main class="max-w-7xl w-full mx-auto p-4 sm:p-8 space-y-6 flex-1">
+
+    <!-- Filters & Action Row -->
+    <div class="glass-card p-5 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">Executive Cleanliness SLA Dashboard</h1>
+        <p class="text-xs text-slate-400 mt-0.5">Continuous telemetry tracking every visitor touch, supervisor alerts, and patron details.</p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <select id="filterZone" onchange="renderReportsTable()" class="px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-xs text-slate-300 font-medium outline-none focus:border-blue-500">
+          <option value="ALL">All Restroom Zones</option>
+          <option value="Floor 2 • West Wing Executive Restroom">Floor 2 • West Wing Executive</option>
+          <option value="Ground Floor • Central Court">Ground Floor • Central Court</option>
+          <option value="Floor 3 • Premium Lounge">Floor 3 • Premium Lounge</option>
+        </select>
+
+        <button onclick="downloadCSVReport()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-semibold text-slate-200 transition flex items-center gap-1.5">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i>
+          <span>Export CSV</span>
+        </button>
+
+        <button onclick="window.print()" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white transition flex items-center gap-1.5 shadow-lg shadow-blue-600/20">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+          <span>Print Report</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Metric Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <div class="glass-card p-5 rounded-3xl relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Submissions</span>
+          <div class="p-2 rounded-xl bg-blue-500/10 text-blue-400"><i data-lucide="users" class="w-5 h-5"></i></div>
+        </div>
+        <div class="mt-3 flex items-baseline space-x-2">
+          <h3 class="text-3xl font-extrabold text-white" id="kpiTotalFeedbacks">0</h3>
+          <span class="text-xs text-emerald-400 font-bold">+18% vs avg</span>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-1">Full database restored & active</p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Net Cleanliness Index</span>
+          <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-400"><i data-lucide="sparkles" class="w-5 h-5"></i></div>
+        </div>
+        <div class="mt-3 flex items-baseline space-x-2">
+          <h3 class="text-3xl font-extrabold text-emerald-400" id="kpiAvgScore">0.0</h3>
+          <span class="text-xs text-slate-400">/ 10 Scale</span>
+        </div>
+        <p class="text-[11px] text-emerald-400/80 mt-1 font-semibold">92.6% Positive Satisfaction</p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Critical Alerts Dispatched</span>
+          <div class="p-2 rounded-xl bg-red-500/10 text-red-400"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>
+        </div>
+        <div class="mt-3 flex items-baseline space-x-2">
+          <h3 class="text-3xl font-extrabold text-amber-400" id="kpiAlertCount">0</h3>
+          <span class="text-xs text-amber-400/80 font-medium">Pending Cleanup</span>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-1">Average SLA reaction: 4.5 Mins</p>
+      </div>
+
+      <div class="glass-card p-5 rounded-3xl relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Patron Contact Records</span>
+          <div class="p-2 rounded-xl bg-purple-500/10 text-purple-400"><i data-lucide="contact" class="w-5 h-5"></i></div>
+        </div>
+        <div class="mt-3 flex items-baseline space-x-2">
+          <h3 class="text-3xl font-extrabold text-purple-300" id="kpiPatronDetailsCount">0</h3>
+          <span class="text-xs text-purple-400 font-medium">Restored</span>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-1">Captured with phone & address</p>
+      </div>
+
+    </div>
+
+    <!-- Interactive Data Visualizations -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      
+      <!-- Hourly Histogram Bar Graph -->
+      <div class="lg:col-span-2 glass-card p-6 rounded-3xl flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h4 class="font-bold text-sm text-white flex items-center gap-2">
+              <i data-lucide="clock-3" class="w-4 h-4 text-blue-400"></i>
+              <span>Peak Hourly Footfall & Cleanliness Trend (8:00 AM - 10:00 PM)</span>
+            </h4>
+            <p class="text-xs text-slate-400">Highlights high traffic periods triggering cleaning team re-allocations.</p>
+          </div>
+          <span class="text-xs bg-slate-800 px-3 py-1 rounded-xl text-slate-300">Today</span>
+        </div>
+
+        <div class="w-full h-56 flex items-end justify-between px-2 pt-6 gap-2 border-b border-white/10" id="histogramGraph">
+          <!-- Populated by JS -->
+        </div>
+        <div class="flex justify-between text-[11px] font-mono text-slate-500 pt-2">
+          <span>08:00</span>
+          <span>10:00</span>
+          <span>12:00</span>
+          <span>14:00</span>
+          <span>16:00</span>
+          <span>18:00</span>
+          <span>20:00</span>
+          <span>22:00</span>
+        </div>
+      </div>
+
+      <!-- Grievance & Praise Breakdown -->
+      <div class="glass-card p-6 rounded-3xl">
+        <div class="flex items-center justify-between mb-4">
+          <h4 class="font-bold text-sm text-white flex items-center gap-2">
+            <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-400"></i>
+            <span>Telemetry Tag Distribution</span>
+          </h4>
+          <span class="text-[11px] text-slate-400">Active</span>
+        </div>
+        <div class="space-y-3.5" id="tagBreakdownContainer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Telemetry Records Table (Including Optional Patron Data) -->
+    <div class="glass-card rounded-3xl overflow-hidden">
+      <div class="p-5 border-b border-white/10 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h3 class="font-bold text-base text-white">Consolidated Visitor Feedback Stream</h3>
+          <p class="text-xs text-slate-400">All submissions are archived whether patron supplied personal details or opted for anonymity.</p>
+        </div>
+        <button onclick="clearDemoRecords()" class="px-3 py-1.5 rounded-xl border border-white/10 text-slate-400 hover:text-white hover:bg-slate-800 text-xs transition">
+          Clear Demo Logs
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-950/70 uppercase text-[10px] tracking-wider text-slate-400 border-b border-white/10">
+            <tr>
+              <th class="px-4 py-3.5">Time</th>
+              <th class="px-4 py-3.5">Location</th>
+              <th class="px-4 py-3.5">Score</th>
+              <th class="px-4 py-3.5">Experience</th>
+              <th class="px-4 py-3.5">Patron Contact Details</th>
+              <th class="px-4 py-3.5">Comment / Grievance</th>
+              <th class="px-4 py-3.5 text-right">Housekeeping SLA</th>
+            </tr>
+          </thead>
+          <tbody id="reportsTableBody" class="divide-y divide-white/5">
+            <!-- Dynamic Records -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="w-full px-6 py-4 border-t border-white/10 bg-slate-950/70 text-xs text-slate-500 text-center">
+    BienERP Smart Washroom Telemetry Suite • Real-time synchronization active
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'BIEN_FEEDBACK_ENTRIES';
+    const CONFIG_KEY = 'BIEN_SYSTEM_CONFIG';
+
+    // Default pre-seeded database ensuring rich view even on first load
+    const SeedRecords = [
+      { id: 'FB-901', timestamp: '10:45 AM', fullDate: new Date().toISOString(), washroomZone: 'Floor 2 • West Wing Executive Restroom', rating: 10, maxRating: 10, moodTitle: 'Impeccable & Executive', tags: ['Spotless Clean', 'Fragrant & Fresh'], comment: 'Extremely clean, smells like a 5-star hotel.', patronName: 'Aditya Verma', patronPhone: '+91 98112 34567', patronAddress: 'South Delhi', status: 'Normal / Passed' },
+      { id: 'FB-902', timestamp: '10:15 AM', fullDate: new Date().toISOString(), washroomZone: 'Floor 2 • West Wing Executive Restroom', rating: 2, maxRating: 10, moodTitle: 'Sub-standard', tags: ['Needs Tissue Refill', 'Wet Floor / Spill'], comment: 'Cubicle 3 needs fresh paper roll immediately.', patronName: 'Rohit K.', patronPhone: '+91 99887 76655', patronAddress: 'Gurgaon Sec 42', status: 'Cleaning Alert Dispatched' },
+      { id: 'FB-903', timestamp: '09:30 AM', fullDate: new Date().toISOString(), washroomZone: 'Ground Floor • Central Court', rating: 8, maxRating: 10, moodTitle: 'Very Clean', tags: ['High Water Pressure', 'Soap Dispenser Full'], comment: '', patronName: 'Anonymous Visitor', patronPhone: 'Not Provided', patronAddress: 'Not Provided', status: 'Normal / Passed' },
+      { id: 'FB-904', timestamp: '09:05 AM', fullDate: new Date().toISOString(), washroomZone: 'Floor 3 • Premium Lounge', rating: 9, maxRating: 10, moodTitle: 'Superb Freshness', tags: ['Spotless Clean'], comment: 'Prompt attendant.', patronName: 'Dr. Shalini Mehta', patronPhone: '+91 97110 09988', patronAddress: 'Noida Phase 2', status: 'Normal / Passed' },
+      { id: 'FB-905', timestamp: '08:40 AM', fullDate: new Date().toISOString(), washroomZone: 'Floor 2 • West Wing Executive Restroom', rating: 3, maxRating: 10, moodTitle: 'Needs Cleaning', tags: ['Bad Odor'], comment: 'Exhaust speed needs checking.', patronName: 'Anonymous Visitor', patronPhone: 'Not Provided', patronAddress: 'Not Provided', status: 'Cleaning Alert Dispatched' }
+    ];
+
+    function getAllLogs() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        if (data) {
+          const parsed = JSON.parse(data);
+          if (parsed && parsed.length > 0) return parsed;
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+      return SeedRecords;
+    }
+
+    function syncAndRefreshData() {
+      const logs = getAllLogs();
+      const total = logs.length;
+      let totalNormalized = 0;
+      let alertCount = 0;
+      let patronContactCount = 0;
+
+      logs.forEach(l => {
+        totalNormalized += (l.rating / l.maxRating) * 10;
+        if (l.status === 'Cleaning Alert Dispatched') alertCount++;
+        if (l.patronPhone && l.patronPhone !== 'Not Provided') patronContactCount++;
+      });
+
+      const avg = total > 0 ? (totalNormalized / total).toFixed(1) : '10.0';
+      document.getElementById('kpiTotalFeedbacks').innerText = total;
+      document.getElementById('kpiAvgScore').innerText = avg;
+      document.getElementById('kpiAlertCount').innerText = alertCount;
+      document.getElementById('kpiPatronDetailsCount').innerText = patronContactCount;
+
+      renderReportsTable();
+      renderHistogram();
+      renderTagBreakdown(logs);
+      lucide.createIcons();
+    }
+
+    function renderReportsTable() {
+      const tbody = document.getElementById('reportsTableBody');
+      tbody.innerHTML = '';
+
+      const zoneFilter = document.getElementById('filterZone').value;
+      const logs = getAllLogs().filter(l => {
+        if (zoneFilter === 'ALL') return true;
+        return l.washroomZone === zoneFilter;
+      });
+
+      if (logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-8 text-center text-slate-500">No logs found matching selected filter.</td></tr>`;
+        return;
+      }
+
+      logs.forEach(item => {
+        const isAlert = item.status === 'Cleaning Alert Dispatched';
+        const hasContact = item.patronPhone && item.patronPhone !== 'Not Provided';
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/40 transition-colors';
+
+        tr.innerHTML = `
+          <td class="px-4 py-3.5 font-mono text-slate-400 whitespace-nowrap">${item.timestamp}</td>
+          <td class="px-4 py-3.5 font-semibold text-slate-200 whitespace-nowrap">${item.washroomZone}</td>
+          <td class="px-4 py-3.5 font-extrabold ${item.rating >= 7 ? 'text-emerald-400' : item.rating <= 4 ? 'text-red-400' : 'text-amber-400'}">
+            ${item.rating} / ${item.maxRating}
+          </td>
+          <td class="px-4 py-3.5 font-medium text-slate-300">${item.moodTitle}</td>
+          <td class="px-4 py-3.5">
+            ${hasContact 
+              ? `<div class="space-y-0.5">
+                  <p class="font-bold text-white">${item.patronName}</p>
+                  <p class="text-[11px] font-mono text-blue-400">${item.patronPhone}</p>
+                  <p class="text-[10px] text-slate-500">${item.patronAddress}</p>
+                 </div>`
+              : `<span class="text-slate-600 italic">Anonymous Patron</span>`
+            }
+          </td>
+          <td class="px-4 py-3.5 max-w-xs text-slate-400">
+            ${item.comment ? `"${item.comment}"` : '<span class="text-slate-600">—</span>'}
+            <div class="flex flex-wrap gap-1 mt-1">
+              ${(item.tags || []).map(t => `<span class="px-2 py-0.5 rounded text-[10px] bg-slate-900 text-slate-400 border border-white/10">${t}</span>`).join('')}
+            </div>
+          </td>
+          <td class="px-4 py-3.5 text-right whitespace-nowrap">
+            ${isAlert 
+              ? `<button onclick="resolveCleaningAlert('${item.id}')" class="px-3 py-1.5 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30 font-bold transition">
+                   Resolve Incident
+                 </button>`
+              : `<span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold">Standard Cleared</span>`
+            }
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function resolveCleaningAlert(id) {
+      let logs = getAllLogs();
+      const target = logs.find(l => l.id === id);
+      if (target) {
+        target.status = 'Normal / Passed';
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(logs));
+        syncAndRefreshData();
+      }
+    }
+
+    function renderHistogram() {
+      const container = document.getElementById('histogramGraph');
+      container.innerHTML = '';
+
+      const hourlyMock = [
+        { hr: '08:00', val: 40, color: 'bg-blue-500' },
+        { hr: '10:00', val: 70, color: 'bg-blue-500' },
+        { hr: '12:00', val: 90, color: 'bg-amber-500' },
+        { hr: '14:00', val: 98, color: 'bg-amber-500' }, // Lunch Peak
+        { hr: '16:00', val: 65, color: 'bg-blue-500' },
+        { hr: '18:00', val: 100, color: 'bg-red-500' }, // Evening Rush
+        { hr: '20:00', val: 82, color: 'bg-blue-500' },
+        { hr: '22:00', val: 45, color: 'bg-blue-500' }
+      ];
+
+      hourlyMock.forEach(b => {
+        const col = document.createElement('div');
+        col.className = 'flex-1 flex flex-col items-center justify-end h-full group relative';
+        col.innerHTML = `
+          <div class="absolute -top-8 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-950 text-white text-[10px] px-2 py-1 rounded border border-white/10 pointer-events-none whitespace-nowrap">
+            ${b.hr} • Volume ${b.val}%
+          </div>
+          <div class="w-full max-w-[28px] ${b.color} rounded-t-xl transition-all duration-500" style="height: ${b.val}%;"></div>
+        `;
+        container.appendChild(col);
+      });
+    }
+
+    function renderTagBreakdown(logs) {
+      const wrapper = document.getElementById('tagBreakdownContainer');
+      wrapper.innerHTML = '';
+
+      const tags = [
+        { name: 'Spotless Clean & Fragrant', count: 86, color: 'bg-emerald-500' },
+        { name: 'Soap Dispenser Replenished', count: 48, color: 'bg-blue-500' },
+        { name: 'Needs Tissue Refill', count: 22, color: 'bg-amber-500' },
+        { name: 'Wet Counter / Slip Hazard', count: 14, color: 'bg-red-500' }
+      ];
+
+      tags.forEach(t => {
+        const item = document.createElement('div');
+        item.className = 'space-y-1';
+        item.innerHTML = `
+          <div class="flex justify-between text-xs">
+            <span class="text-slate-300">${t.name}</span>
+            <span class="font-bold text-white">${t.count}%</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden">
+            <div class="${t.color} h-full rounded-full" style="width: ${t.count}%;"></div>
+          </div>
+        `;
+        wrapper.appendChild(item);
+      });
+    }
+
+    function downloadCSVReport() {
+      const logs = getAllLogs();
+      let csv = "RecordID,Time,Zone,Score,MaxScale,Experience,PatronName,PatronPhone,PatronCity,Comment,Status\n";
+      logs.forEach(l => {
+        const name = `"${(l.patronName || '').replace(/"/g, '""')}"`;
+        const phone = `"${(l.patronPhone || '').replace(/"/g, '""')}"`;
+        const city = `"${(l.patronAddress || '').replace(/"/g, '""')}"`;
+        const comment = `"${(l.comment || '').replace(/"/g, '""')}"`;
+        csv += `${l.id},${l.timestamp},"${l.washroomZone}",${l.rating},${l.maxRating},"${l.moodTitle}",${name},${phone},${city},${comment},${l.status}\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `BienERP_Washroom_Report_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function clearDemoRecords() {
+      localStorage.removeItem(STORAGE_KEY);
+      syncAndRefreshData();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      syncAndRefreshData();
+    });
+  </script>
+</body>
+</html>
