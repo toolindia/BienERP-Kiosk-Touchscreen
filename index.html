@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BienERP Smart Washroom Feedback</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              400: 'var(--brand-accent, #3b82f6)',
+              500: 'var(--brand-primary, #1d4ed8)',
+              600: 'var(--brand-dark, #1e40af)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --brand-primary: #2563eb;
+      --brand-accent: #60a5fa;
+      --brand-dark: #1e40af;
+      --brand-bg: #090d16;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      background-color: var(--brand-bg);
+    }
+    
+    /* Cinematic Neon Glow Effect */
+    .cinematic-glow {
+      box-shadow: 0 0 50px -10px rgba(37, 99, 235, 0.35);
+    }
+    .badge-glow {
+      box-shadow: 0 0 20px -3px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Floating particles */
+    @keyframes floatParticle {
+      0% { transform: translateY(0px) scale(0.8); opacity: 0; }
+      20% { opacity: 0.9; }
+      100% { transform: translateY(-90px) scale(1.4); opacity: 0; }
+    }
+    .particle-float {
+      animation: floatParticle 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Glass Panels */
+    .glass-kiosk {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    /* Custom SVG Face Pulse */
+    .avatar-card:hover .avatar-face {
+      transform: scale(1.12);
+      filter: drop-shadow(0 0 16px currentColor);
+    }
+    .avatar-face {
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-100 flex flex-col justify-between selection:bg-blue-500 selection:text-white relative overflow-x-hidden">
+
+  <!-- Ambient Cinematic Background Glows -->
+  <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-blue-600/15 rounded-full blur-[140px]"></div>
+    <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-indigo-600/10 rounded-full blur-[130px]"></div>
+  </div>
+
+  <!-- Particle Container for Floating Emitters -->
+  <div id="particleCanvas" class="fixed inset-0 pointer-events-none z-50"></div>
+
+  <!-- Top Global Header -->
+  <header class="w-full px-6 py-4 border-b border-white/10 bg-slate-950/60 backdrop-blur-lg flex items-center justify-between z-30">
+    <div class="flex items-center space-x-3.5">
+      <img id="kioskMallLogo" src="https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg" alt="Logo" class="h-10 w-10 rounded-xl object-cover ring-2 ring-blue-500/40 shadow-lg shadow-blue-500/20">
+      <div>
+        <div class="flex items-center space-x-2">
+          <span class="font-extrabold text-sm sm:text-base tracking-tight text-white" id="brandMallTitle">Grand Galleria Mall</span>
+          <span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">Live Kiosk</span>
+        </div>
+        <p class="text-[11px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
+          <i data-lucide="map-pin" class="w-3 h-3 text-blue-400"></i>
+          <span id="washroomLocationText">Floor 2 • West Wing Executive Restroom</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Navigation Hub & Live Time -->
+    <div class="flex items-center space-x-3">
+      <div class="hidden sm:flex flex-col items-end mr-2">
+        <span class="text-xs font-mono font-bold text-slate-300" id="liveClock">--:--:--</span>
+        <span class="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          Sanitized & Audited
+        </span>
+      </div>
+
+      <a href="reports.html" class="px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+        <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-blue-400"></i>
+        <span>Reports</span>
+      </a>
+
+      <a href="admin.html" class="px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-400"></i>
+        <span>Admin / AMC</span>
+      </a>
+
+      <button onclick="toggleSound()" id="soundToggleBtn" class="p-2 rounded-xl bg-slate-800/80 border border-white/10 text-slate-300 hover:text-white transition" title="Mute/Unmute Audio">
+        <i data-lucide="volume-2" id="soundIcon" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Kiosk Center Interactive Area -->
+  <main class="flex-1 flex items-center justify-center p-4 sm:p-6 z-20">
+    
+    <div class="w-full max-w-2xl glass-kiosk rounded-3xl p-6 sm:p-10 cinematic-glow relative">
+      
+      <!-- Submission State Container -->
+      <div id="ratingInputBlock" class="space-y-7">
+        
+        <!-- Header Prompt -->
+        <div class="text-center space-y-2">
+          <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 inline-block">
+            BienERP Facility Experience
+          </span>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">How was your washroom experience?</h1>
+          <p class="text-xs sm:text-sm text-slate-400 max-w-md mx-auto">Please tap your rating below to ensure highest hygiene standards.</p>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- RATING INTERFACES (Controlled dynamically via admin.html) -->
+        <!-- ============================================================== -->
+        <div class="py-1">
+
+          <!-- 1. CINEMATIC VECTOR AVATARS (No standard mobile emojis) -->
+          <div id="mode-avatars" class="rating-mode-block hidden">
+            <div class="grid grid-cols-5 gap-2 sm:gap-4">
+              
+              <!-- 1. Critical Discontent (Red Vector Glow) -->
+              <button type="button" onclick="handleScoreSelect(1, 5, 'Critical Attention Required', 'critical')" class="avatar-card p-3 sm:p-4 rounded-2xl bg-slate-900/60 hover:bg-red-950/40 border border-white/10 hover:border-red-500/50 flex flex-col items-center justify-center transition-all duration-300 group">
+                <div class="avatar-face text-red-500 w-12 h-12 sm:w-14 sm:h-14 mb-2 flex items-center justify-center">
+                  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="3.5" class="opacity-90"/>
+                    <path d="M22 25L28 29M42 25L36 29" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                    <circle cx="25" cy="31" r="3.5" fill="currentColor"/>
+                    <circle cx="39" cy="31" r="3.5" fill="currentColor"/>
+                    <path d="M22 46C26 39 38 39 42 46" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="text-xs font-bold text-slate-300 group-hover:text-red-400 transition-colors">Unacceptable</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Tier 1</span>
+              </button>
+
+              <!-- 2. Dissatisfied (Orange Vector) -->
+              <button type="button" onclick="handleScoreSelect(2, 5, 'Sub-standard Cleanliness', 'poor')" class="avatar-card p-3 sm:p-4 rounded-2xl bg-slate-900/60 hover:bg-orange-950/40 border border-white/10 hover:border-orange-500/50 flex flex-col items-center justify-center transition-all duration-300 group">
+                <div class="avatar-face text-orange-400 w-12 h-12 sm:w-14 sm:h-14 mb-2 flex items-center justify-center">
+                  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="3.5" class="opacity-90"/>
+                    <circle cx="23" cy="28" r="3.5" fill="currentColor"/>
+                    <circle cx="41" cy="28" r="3.5" fill="currentColor"/>
+                    <path d="M24 43C28 39 36 39 40 43" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="text-xs font-bold text-slate-300 group-hover:text-orange-400 transition-colors">Needs Work</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Tier 2</span>
+              </button>
+
+              <!-- 3. Neutral (Yellow/Amber Vector) -->
+              <button type="button" onclick="handleScoreSelect(3, 5, 'Average / Standard', 'fair')" class="avatar-card p-3 sm:p-4 rounded-2xl bg-slate-900/60 hover:bg-amber-950/40 border border-white/10 hover:border-amber-500/50 flex flex-col items-center justify-center transition-all duration-300 group">
+                <div class="avatar-face text-amber-400 w-12 h-12 sm:w-14 sm:h-14 mb-2 flex items-center justify-center">
+                  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="3.5" class="opacity-90"/>
+                    <circle cx="24" cy="29" r="3.5" fill="currentColor"/>
+                    <circle cx="40" cy="29" r="3.5" fill="currentColor"/>
+                    <line x1="24" y1="42" x2="40" y2="42" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="text-xs font-bold text-slate-300 group-hover:text-amber-400 transition-colors">Acceptable</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Tier 3</span>
+              </button>
+
+              <!-- 4. Pleased (Emerald Vector) -->
+              <button type="button" onclick="handleScoreSelect(4, 5, 'Very Fresh & Clean', 'good')" class="avatar-card p-3 sm:p-4 rounded-2xl bg-slate-900/60 hover:bg-emerald-950/40 border border-white/10 hover:border-emerald-500/50 flex flex-col items-center justify-center transition-all duration-300 group">
+                <div class="avatar-face text-emerald-400 w-12 h-12 sm:w-14 sm:h-14 mb-2 flex items-center justify-center">
+                  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="3.5" class="opacity-90"/>
+                    <path d="M20 28C22 25 26 25 28 28" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                    <path d="M36 28C38 25 42 25 44 28" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                    <path d="M23 39C27 46 37 46 41 39" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="text-xs font-bold text-slate-300 group-hover:text-emerald-400 transition-colors">Clean & Fresh</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Tier 4</span>
+              </button>
+
+              <!-- 5. Flawless Executive (Cyan/Electric Blue Vector) -->
+              <button type="button" onclick="handleScoreSelect(5, 5, 'Supreme Hygiene & Fragrance', 'flawless')" class="avatar-card p-3 sm:p-4 rounded-2xl bg-slate-900/60 hover:bg-cyan-950/40 border border-white/10 hover:border-cyan-400/50 flex flex-col items-center justify-center transition-all duration-300 group">
+                <div class="avatar-face text-cyan-400 w-12 h-12 sm:w-14 sm:h-14 mb-2 flex items-center justify-center">
+                  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+                    <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="3.5" class="opacity-90"/>
+                    <!-- Star eyes -->
+                    <path d="M24 24L25.5 28L30 28.5L26.5 31.5L27.5 36L24 33.5L20.5 36L21.5 31.5L18 28.5L22.5 28L24 24Z" fill="currentColor"/>
+                    <path d="M40 24L41.5 28L46 28.5L42.5 31.5L43.5 36L40 33.5L36.5 36L37.5 31.5L34 28.5L38.5 28L40 24Z" fill="currentColor"/>
+                    <path d="M22 40C26 48 38 48 42 40" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="text-xs font-bold text-slate-300 group-hover:text-cyan-400 transition-colors">Exemplary</span>
+                <span class="text-[10px] text-slate-500 mt-0.5">Tier 5</span>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- 2. 1-10 NUMERICAL SCALE -->
+          <div id="mode-scale10" class="rating-mode-block space-y-3">
+            <div class="grid grid-cols-5 sm:grid-cols-10 gap-2">
+              <button type="button" onclick="handleScoreSelect(1, 10, 'Unacceptable / Critical', 'critical')" class="num-btn h-14 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-red-500 hover:bg-red-500/20 text-white font-extrabold text-sm flex flex-col items-center justify-center transition-all" data-num="1">
+                <span>1</span>
+                <span class="text-[9px] text-red-400 font-normal">Poor</span>
+              </button>
+              <button type="button" onclick="handleScoreSelect(2, 10, 'Sub-standard', 'critical')" class="num-btn h-14 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-red-500 hover:bg-red-500/20 text-white font-extrabold text-sm flex items-center justify-center transition-all" data-num="2">2</button>
+              <button type="button" onclick="handleScoreSelect(3, 10, 'Needs Cleaning', 'poor')" class="num-btn h-14 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-orange-500 hover:bg-orange-500/20 text-white font-extrabold text-sm flex items-center justify-center transition-all" data-num="3">3</button>
+              <button type="button" onclick="handleScoreSelect(4, 10, 'Below Standard', 'poor')" class="num-btn h-14 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-orange-500 hover:bg-orange-500/20 text-white font-extrabold text-sm flex items-center justify-center transition-all" data-num="4">4</button>
+              <button type="button" onclick="handleScoreSelect(5, 10, 'Acceptable', 'fair')" class="num-btn h-14 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-amber-500 hover:bg-amber-500/20 text-white font-extrabold text-sm flex flex-col items-center justify-center transition-all" data-num="5">
+                <span>5</span>
+                <span class="text-[9px] text-amber-400 font-normal">Fair</span>
+              </button>
+              <button type="button" onclick="handleScoreSelect(6, 10, 'Standard Quality', 'fair')" class="num-btn h-14 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-yellow-400 hover:bg-yellow-400/20 text-white font-extrabold text-sm flex items-center justify-center transition-all" data-num="6">6</button>
+              <button type="button" onclick="handleScoreSelect(7, 10, 'Good Condition', 'good')" class="num-btn h-14 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-emerald-500 hover:bg-emerald-500/20 text-white font-extrabold text-sm flex items-center justify-center transition-all" data-num="7">7</button>
+              <button type="button" onclick="handleScoreSelect(8, 10, 'Very Clean', 'good')" class="num-btn h-14 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-emerald-500 hover:bg-emerald-500/20 text-white font-extrabold text-sm flex items-center justify-center transition-all" data-num="8">8</button>
+              <button type="button" onclick="handleScoreSelect(9, 10, 'Superb Freshness', 'flawless')" class="num-btn h-14 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-cyan-400 hover:bg-cyan-400/20 text-white font-extrabold text-sm flex items-center justify-center transition-all" data-num="9">9</button>
+              <button type="button" onclick="handleScoreSelect(10, 10, 'Impeccable & Executive', 'flawless')" class="num-btn h-14 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-cyan-400 hover:bg-cyan-400/20 text-white font-extrabold text-sm flex flex-col items-center justify-center transition-all" data-num="10">
+                <span>10</span>
+                <span class="text-[9px] text-cyan-300 font-normal">Super</span>
+              </button>
+            </div>
+            <div class="flex justify-between text-[11px] font-semibold text-slate-500 px-1">
+              <span>⚠ Poor / Urgent Action</span>
+              <span>• Standard</span>
+              <span>★ 5-Star Luxury Clean</span>
+            </div>
+          </div>
+
+          <!-- 3. 1-5 CLASSIC STARS -->
+          <div id="mode-stars" class="rating-mode-block hidden">
+            <div class="flex items-center justify-center space-x-3 sm:space-x-6 py-2">
+              <button type="button" onclick="handleScoreSelect(1, 5, '1 Star - Poor', 'critical')" class="star-card p-4 rounded-2xl bg-slate-900/60 border border-white/10 hover:border-amber-400 transition-all flex flex-col items-center group" data-star="1">
+                <i data-lucide="star" class="w-10 h-10 text-slate-600 group-hover:text-amber-400 transition-colors"></i>
+                <span class="text-xs font-bold text-slate-400 mt-2">1 Star</span>
+              </button>
+              <button type="button" onclick="handleScoreSelect(2, 5, '2 Stars - Average', 'poor')" class="star-card p-4 rounded-2xl bg-slate-900/60 border border-white/10 hover:border-amber-400 transition-all flex flex-col items-center group" data-star="2">
+                <i data-lucide="star" class="w-10 h-10 text-slate-600 group-hover:text-amber-400 transition-colors"></i>
+                <span class="text-xs font-bold text-slate-400 mt-2">2 Stars</span>
+              </button>
+              <button type="button" onclick="handleScoreSelect(3, 5, '3 Stars - Fair', 'fair')" class="star-card p-4 rounded-2xl bg-slate-900/60 border border-white/10 hover:border-amber-400 transition-all flex flex-col items-center group" data-star="3">
+                <i data-lucide="star" class="w-10 h-10 text-slate-600 group-hover:text-amber-400 transition-colors"></i>
+                <span class="text-xs font-bold text-slate-400 mt-2">3 Stars</span>
+              </button>
+              <button type="button" onclick="handleScoreSelect(4, 5, '4 Stars - Very Good', 'good')" class="star-card p-4 rounded-2xl bg-slate-900/60 border border-white/10 hover:border-amber-400 transition-all flex flex-col items-center group" data-star="4">
+                <i data-lucide="star" class="w-10 h-10 text-slate-600 group-hover:text-amber-400 transition-colors"></i>
+                <span class="text-xs font-bold text-slate-400 mt-2">4 Stars</span>
+              </button>
+              <button type="button" onclick="handleScoreSelect(5, 5, '5 Stars - Exceptional', 'flawless')" class="star-card p-4 rounded-2xl bg-slate-900/60 border border-white/10 hover:border-amber-400 transition-all flex flex-col items-center group" data-star="5">
+                <i data-lucide="star" class="w-10 h-10 text-slate-600 group-hover:text-amber-400 transition-colors"></i>
+                <span class="text-xs font-bold text-slate-400 mt-2">5 Stars</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Dynamic Feedback Status Pill -->
+        <div id="selectionPill" class="hidden p-3 rounded-2xl border text-xs sm:text-sm font-semibold flex items-center justify-between transition-all">
+          <div class="flex items-center space-x-2">
+            <span id="pillIcon" class="w-2.5 h-2.5 rounded-full bg-blue-400 animate-ping"></span>
+            <span id="pillText" class="text-slate-200">Selected rating</span>
+          </div>
+          <span id="pillBadge" class="px-2.5 py-0.5 rounded-full bg-white/10 font-mono text-xs font-bold text-white">10 / 10</span>
+        </div>
+
+        <!-- Quick Aspect Observation Tags -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Quick Observations</label>
+            <span class="text-[11px] text-slate-500">Tap applicable points</span>
+          </div>
+          <div id="kioskTagsWrapper" class="flex flex-wrap gap-2">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Optional Comments / Specific Feedback -->
+        <div class="space-y-1.5">
+          <div class="flex justify-between items-center">
+            <label class="text-xs font-bold uppercase tracking-wider text-slate-400">Comments & Specific Notes (Optional)</label>
+            <span class="text-[10px] text-slate-500">Max 160 chars</span>
+          </div>
+          <input type="text" id="kioskCommentInput" maxlength="160" placeholder="e.g., Faucet #2 water pressure low, fragrant air freshener..." class="w-full px-4 py-3 rounded-2xl bg-slate-900/80 border border-white/10 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 transition">
+        </div>
+
+        <!-- OPTIONAL PATRON DETAILS ACCORDION (Contact, Name & City) -->
+        <div class="rounded-2xl border border-white/10 bg-slate-900/40 p-4 transition-all">
+          <button type="button" onclick="togglePatronDetailsAccordion()" class="w-full flex items-center justify-between text-left">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="user-plus" class="w-4 h-4 text-blue-400"></i>
+              <span class="text-xs font-bold text-slate-300">Provide Your Contact Details (100% Optional)</span>
+            </div>
+            <span class="text-[11px] text-blue-400 font-semibold flex items-center gap-1" id="accordionIndicator">
+              Expand <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+            </span>
+          </button>
+          
+          <div id="patronDetailsFields" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/10 mt-3">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Full Name</label>
+              <input type="text" id="patronName" placeholder="Your name" class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-xs text-white outline-none focus:border-blue-500">
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Phone / Mobile</label>
+              <input type="tel" id="patronPhone" placeholder="+91 98765 43210" class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-xs text-white outline-none focus:border-blue-500">
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Address / City</label>
+              <input type="text" id="patronCity" placeholder="City or Unit #" class="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-xs text-white outline-none focus:border-blue-500">
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Feedback Button -->
+        <button type="button" onclick="submitKioskFeedback()" id="submitBtn" class="w-full py-4 px-6 rounded-2xl bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white font-bold text-sm sm:text-base tracking-wide flex items-center justify-center space-x-2 transition-all shadow-xl shadow-blue-600/30">
+          <span>Submit Washroom Feedback</span>
+          <i data-lucide="send" class="w-4 h-4"></i>
+        </button>
+
+      </div>
+
+      <!-- SUCCESS CONFIRMATION OVERLAY (Auto-resets in 3 seconds) -->
+      <div id="successOverlay" class="hidden py-12 px-4 text-center space-y-5">
+        <div class="w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/20 animate-bounce">
+          <i data-lucide="check" class="w-10 h-10 stroke-[3]"></i>
+        </div>
+        <div class="space-y-1">
+          <h2 class="text-2xl font-black text-white">Thank You For Your Feedback</h2>
+          <p class="text-xs sm:text-sm text-slate-400 max-w-sm mx-auto">
+            Your assessment has been recorded by BienERP Cloud & forwarded to our housekeeping response desk.
+          </p>
+        </div>
+        <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-slate-900 border border-white/10 text-xs text-slate-400">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 animate-spin text-blue-400"></i>
+          <span>Resetting kiosk for next patron in <strong id="resetSecTimer" class="text-blue-400">3</strong>s</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Kiosk Operational Footer -->
+  <footer class="w-full px-6 py-3 border-t border-white/10 bg-slate-950/60 text-[11px] text-slate-500 flex flex-wrap items-center justify-between gap-2 z-30">
+    <div class="flex items-center space-x-2">
+      <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+      <span>Duty Incharge: <strong class="text-slate-300" id="attendantOnDuty">Mukesh Sharma (Shift 1)</strong></span>
+    </div>
+    <div>
+      Software Engine by <strong class="text-slate-300 font-semibold">BienERP Enterprise</strong>
+    </div>
+  </footer>
+
+  <!-- Master Application Script -->
+  <script>
+    // System Local Cache Keys
+    const STORAGE_KEY = 'BIEN_FEEDBACK_ENTRIES';
+    const CONFIG_KEY = 'BIEN_SYSTEM_CONFIG';
+
+    // Default System Config
+    const DefaultConfig = {
+      mallName: 'Grand Galleria Mall',
+      washroomLocation: 'Floor 2 • West Wing Executive Restroom',
+      ratingMode: '10', // '10', '5', 'avatars'
+      logoUrl: 'https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg',
+      webhookUrl: '',
+      tags: ['Spotless Clean', 'Fragrant & Fresh', 'Soap Dispenser Full', 'Dry Slip-Free Floor', 'High Water Pressure', 'Needs Tissue Refill', 'Wet Floor / Spill', 'Bad Odor', 'Flush Issue'],
+      themeColor: '#2563eb'
+    };
+
+    let CurrentConfig = Object.assign({}, DefaultConfig);
+    let selectedRating = null;
+    let selectedMaxScale = 10;
+    let selectedMoodTitle = 'Standard';
+    let selectedCategory = 'fair';
+    let activeTags = new Set();
+    let isSoundMuted = false;
+
+    // Load dynamic configurations from localStorage
+    function loadSystemConfig() {
+      try {
+        const saved = localStorage.getItem(CONFIG_KEY);
+        if (saved) {
+          CurrentConfig = Object.assign({}, DefaultConfig, JSON.parse(saved));
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+
+      // Apply Kiosk Config
+      document.getElementById('brandMallTitle').innerText = CurrentConfig.mallName;
+      document.getElementById('washroomLocationText').innerText = CurrentConfig.washroomLocation;
+      if (CurrentConfig.logoUrl) {
+        document.getElementById('kioskMallLogo').src = CurrentConfig.logoUrl;
+      }
+      if (CurrentConfig.themeColor) {
+        document.documentElement.style.setProperty('--brand-primary', CurrentConfig.themeColor);
+      }
+
+      setKioskRatingMode(CurrentConfig.ratingMode);
+      renderKioskTags();
+    }
+
+    function setKioskRatingMode(mode) {
+      CurrentConfig.ratingMode = mode;
+      document.querySelectorAll('.rating-mode-block').forEach(el => el.classList.add('hidden'));
+      if (mode === 'avatars') {
+        document.getElementById('mode-avatars').classList.remove('hidden');
+      } else if (mode === '5') {
+        document.getElementById('mode-stars').classList.remove('hidden');
+      } else {
+        document.getElementById('mode-scale10').classList.remove('hidden');
+      }
+    }
+
+    // Modern Audio Synthesizer (Zero External MP3 dependencies)
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioClass) audioCtx = new AudioClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playCinematicChime(type) {
+      if (isSoundMuted) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+
+        if (type === 'flawless' || type === 'good') {
+          // Dual Harmonic Bell Chime
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc1.type = 'sine';
+          osc2.type = 'triangle';
+          osc1.frequency.setValueAtTime(587.33, now); // D5
+          osc1.frequency.exponentialRampToValueAtTime(880.00, now + 0.22); // A5
+
+          osc2.frequency.setValueAtTime(739.99, now + 0.05); // F#5
+          osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.3); // D6
+
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc1.start(now);
+          osc2.start(now + 0.05);
+          osc1.stop(now + 0.45);
+          osc2.stop(now + 0.45);
+        } else if (type === 'critical' || type === 'poor') {
+          // Low Attention Buzz
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(260, now);
+          osc.frequency.linearRampToValueAtTime(180, now + 0.3);
+
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } else {
+          // Neutral soft click
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function toggleSound() {
+      isSoundMuted = !isSoundMuted;
+      const icon = document.getElementById('soundIcon');
+      if (isSoundMuted) {
+        icon.setAttribute('data-lucide', 'volume-x');
+      } else {
+        icon.setAttribute('data-lucide', 'volume-2');
+        playCinematicChime('neutral');
+      }
+      lucide.createIcons();
+    }
+
+    // Glowing Particle Burst Effect
+    function emitParticles(colorClass) {
+      const container = document.getElementById('particleCanvas');
+      for (let i = 0; i < 7; i++) {
+        const p = document.createElement('div');
+        p.className = `absolute w-3 h-3 rounded-full particle-float pointer-events-none ${colorClass}`;
+        p.style.left = `${45 + (Math.random() * 10 - 5)}%`;
+        p.style.top = `${45 + (Math.random() * 10 - 5)}%`;
+        p.style.animationDelay = `${i * 0.08}s`;
+        container.appendChild(p);
+        setTimeout(() => p.remove(), 1800);
+      }
+    }
+
+    // Handle Rating Selection
+    function handleScoreSelect(score, max, mood, category) {
+      selectedRating = score;
+      selectedMaxScale = max;
+      selectedMoodTitle = mood;
+      selectedCategory = category;
+
+      playCinematicChime(category);
+
+      let particleColor = 'bg-blue-400 shadow-[0_0_12px_#60a5fa]';
+      let pillBg = 'bg-blue-500/10 text-blue-400 border-blue-500/30';
+
+      if (category === 'critical') {
+        particleColor = 'bg-red-500 shadow-[0_0_12px_#ef4444]';
+        pillBg = 'bg-red-500/15 text-red-400 border-red-500/30';
+      } else if (category === 'poor') {
+        particleColor = 'bg-orange-500 shadow-[0_0_12px_#f97316]';
+        pillBg = 'bg-orange-500/15 text-orange-400 border-orange-500/30';
+      } else if (category === 'fair') {
+        particleColor = 'bg-amber-400 shadow-[0_0_12px_#f59e0b]';
+        pillBg = 'bg-amber-500/15 text-amber-400 border-amber-500/30';
+      } else if (category === 'good') {
+        particleColor = 'bg-emerald-400 shadow-[0_0_12px_#10b981]';
+        pillBg = 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
+      } else if (category === 'flawless') {
+        particleColor = 'bg-cyan-400 shadow-[0_0_12px_#06b6d4]';
+        pillBg = 'bg-cyan-500/15 text-cyan-300 border-cyan-400/30';
+      }
+
+      emitParticles(particleColor);
+
+      // Update feedback pill
+      const pill = document.getElementById('selectionPill');
+      pill.className = `p-3 rounded-2xl border text-xs sm:text-sm font-semibold flex items-center justify-between transition-all ${pillBg}`;
+      document.getElementById('pillText').innerText = `${mood}`;
+      document.getElementById('pillBadge').innerText = `${score} / ${max}`;
+      pill.classList.remove('hidden');
+
+      // Highlight active number button
+      if (max === 10) {
+        document.querySelectorAll('.num-btn').forEach(btn => {
+          const val = parseInt(btn.getAttribute('data-num'));
+          if (val === score) {
+            btn.classList.add('ring-2', 'ring-blue-400', 'bg-blue-600', 'scale-105');
+          } else {
+            btn.classList.remove('ring-2', 'ring-blue-400', 'bg-blue-600', 'scale-105');
+          }
+        });
+      }
+
+      // Highlight active stars
+      if (max === 5 && CurrentConfig.ratingMode === '5') {
+        document.querySelectorAll('.star-card').forEach(btn => {
+          const val = parseInt(btn.getAttribute('data-star'));
+          const starIcon = btn.querySelector('svg');
+          if (val <= score) {
+            btn.classList.add('border-amber-400', 'bg-amber-500/10');
+            if (starIcon) starIcon.classList.add('text-amber-400', 'fill-amber-400');
+          } else {
+            btn.classList.remove('border-amber-400', 'bg-amber-500/10');
+            if (starIcon) starIcon.classList.remove('text-amber-400', 'fill-amber-400');
+          }
+        });
+      }
+    }
+
+    function toggleTag(tag) {
+      if (activeTags.has(tag)) {
+        activeTags.delete(tag);
+      } else {
+        activeTags.add(tag);
+      }
+      renderKioskTags();
+      playCinematicChime('neutral');
+    }
+
+    function renderKioskTags() {
+      const wrapper = document.getElementById('kioskTagsWrapper');
+      wrapper.innerHTML = '';
+
+      CurrentConfig.tags.forEach(tag => {
+        const active = activeTags.has(tag);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 ${
+          active 
+            ? 'bg-blue-600 text-white ring-2 ring-blue-400 shadow-md' 
+            : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-white/10'
+        }`;
+        btn.innerHTML = `
+          <span>${tag}</span>
+          ${active ? '<i data-lucide="check" class="w-3.5 h-3.5"></i>' : ''}
+        `;
+        btn.onclick = () => toggleTag(tag);
+        wrapper.appendChild(btn);
+      });
+      lucide.createIcons();
+    }
+
+    function togglePatronDetailsAccordion() {
+      const container = document.getElementById('patronDetailsFields');
+      const ind = document.getElementById('accordionIndicator');
+      if (container.classList.contains('hidden')) {
+        container.classList.remove('hidden');
+        ind.innerHTML = `Collapse <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>`;
+      } else {
+        container.classList.add('hidden');
+        ind.innerHTML = `Expand <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>`;
+      }
+      lucide.createIcons();
+    }
+
+    // Submit Complete Feedback Log
+    function submitKioskFeedback() {
+      if (selectedRating === null) {
+        handleScoreSelect(10, CurrentConfig.ratingMode === '10' ? 10 : 5, 'Executive Cleanliness', 'flawless');
+      }
+
+      const commentVal = document.getElementById('kioskCommentInput').value.trim();
+      const patronNameVal = document.getElementById('patronName').value.trim();
+      const patronPhoneVal = document.getElementById('patronPhone').value.trim();
+      const patronCityVal = document.getElementById('patronCity').value.trim();
+
+      const newLog = {
+        id: 'FB-' + Date.now(),
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        fullDate: new Date().toISOString(),
+        mallName: CurrentConfig.mallName,
+        washroomZone: CurrentConfig.washroomLocation,
+        rating: selectedRating,
+        maxRating: selectedMaxScale,
+        moodTitle: selectedMoodTitle,
+        tags: Array.from(activeTags),
+        comment: commentVal,
+        patronName: patronNameVal || 'Anonymous Visitor',
+        patronPhone: patronPhoneVal || 'Not Provided',
+        patronAddress: patronCityVal || 'Not Provided',
+        dutyAttendant: 'Mukesh Sharma (Shift 1)',
+        status: (selectedRating / selectedMaxScale) <= 0.4 ? 'Cleaning Alert Dispatched' : 'Normal / Passed'
+      };
+
+      // 1. Save locally in persistent store
+      try {
+        let currentLogs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        currentLogs.unshift(newLog);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentLogs));
+      } catch (e) {
+        console.warn('Storage error', e);
+      }
+
+      // 2. Dispatch to Google Apps Script Webhook (if configured)
+      if (CurrentConfig.webhookUrl && CurrentConfig.webhookUrl.startsWith('http')) {
+        try {
+          fetch(CurrentConfig.webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newLog)
+          }).catch(err => console.log('Webhook dispatched in background'));
+        } catch (err) {
+          console.warn('Webhook transmission error', err);
+        }
+      }
+
+      // 3. Show Success Animation
+      document.getElementById('ratingInputBlock').classList.add('hidden');
+      document.getElementById('successOverlay').classList.remove('hidden');
+
+      // 4. Auto Reset Countdown
+      let sec = 3;
+      const timerEl = document.getElementById('resetSecTimer');
+      timerEl.innerText = sec;
+
+      const countdown = setInterval(() => {
+        sec--;
+        if (timerEl) timerEl.innerText = sec;
+        if (sec <= 0) {
+          clearInterval(countdown);
+          resetKioskScreen();
+        }
+      }, 1000);
+    }
+
+    function resetKioskScreen() {
+      selectedRating = null;
+      activeTags.clear();
+      document.getElementById('kioskCommentInput').value = '';
+      document.getElementById('patronName').value = '';
+      document.getElementById('patronPhone').value = '';
+      document.getElementById('patronCity').value = '';
+      document.getElementById('selectionPill').classList.add('hidden');
+
+      document.querySelectorAll('.num-btn').forEach(btn => {
+        btn.classList.remove('ring-2', 'ring-blue-400', 'bg-blue-600', 'scale-105');
+      });
+      document.querySelectorAll('.star-card').forEach(btn => {
+        btn.classList.remove('border-amber-400', 'bg-amber-500/10');
+        const star = btn.querySelector('svg');
+        if (star) star.classList.remove('text-amber-400', 'fill-amber-400');
+      });
+
+      renderKioskTags();
+      document.getElementById('successOverlay').classList.add('hidden');
+      document.getElementById('ratingInputBlock').classList.remove('hidden');
+    }
+
+    // Real-time clock display
+    setInterval(() => {
+      const el = document.getElementById('liveClock');
+      if (el) el.innerText = new Date().toLocaleTimeString();
+    }, 1000);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSystemConfig();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
