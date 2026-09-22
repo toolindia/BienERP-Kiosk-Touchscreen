@@ -9,11 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* Theme 1: White, Light Blue & Dark Blue (Default) */
     :root[data-theme="theme-blue"] {
       --bg-body: #f8fafc;
       --card-bg: #ffffff;
-      --card-border: #e2e8f0;
+      --card-border: #cbd5e1;
       --text-main: #0f172a;
       --text-muted: #64748b;
       --primary-color: #1659b7;
@@ -24,14 +23,12 @@
       --btn-grad-start: #1659b7;
       --btn-grad-end: #0284c7;
       --input-bg: #f8fafc;
-      --shadow-color: rgba(22, 89, 183, 0.15);
+      --shadow-color: rgba(22, 89, 183, 0.12);
     }
-
-    /* Theme 2: White, Grey & Black Monochrome */
     :root[data-theme="theme-mono"] {
       --bg-body: #ffffff;
       --card-bg: #fafafa;
-      --card-border: #e4e4e7;
+      --card-border: #d4d4d8;
       --text-main: #09090b;
       --text-muted: #71717a;
       --primary-color: #18181b;
@@ -42,10 +39,8 @@
       --btn-grad-start: #18181b;
       --btn-grad-end: #3f3f46;
       --input-bg: #ffffff;
-      --shadow-color: rgba(0, 0, 0, 0.12);
+      --shadow-color: rgba(0, 0, 0, 0.08);
     }
-
-    /* Theme 3: White, Dark Red & Maroon */
     :root[data-theme="theme-maroon"] {
       --bg-body: #fffafa;
       --card-bg: #ffffff;
@@ -60,274 +55,283 @@
       --btn-grad-start: #7f1d1d;
       --btn-grad-end: #b91c1c;
       --input-bg: #fffafa;
-      --shadow-color: rgba(127, 29, 29, 0.15);
+      --shadow-color: rgba(127, 29, 29, 0.12);
     }
 
     * {
       font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      touch-action: manipulation;
     }
     body {
       background-color: var(--bg-body);
       color: var(--text-main);
       min-height: 100vh;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition: background-color 0.25s ease;
     }
-    .kiosk-card {
+    .tablet-card {
       background-color: var(--card-bg);
-      border: 1px solid var(--card-border);
-      box-shadow: 0 20px 40px -15px var(--shadow-color);
+      border: 1.5px solid var(--card-border);
+      box-shadow: 0 15px 35px -10px var(--shadow-color);
     }
     .avatar-btn {
       background-color: var(--card-bg);
       border: 2px solid var(--card-border);
-      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      min-height: 90px;
     }
-    .avatar-btn:hover {
-      transform: translateY(-4px) scale(1.03);
-    }
-    .avatar-btn.active {
-      transform: translateY(-6px) scale(1.08);
+    .avatar-btn:active, .avatar-btn.active {
+      transform: scale(0.96);
       border-color: var(--primary-color);
-      box-shadow: 0 12px 24px -6px var(--shadow-color);
+      box-shadow: 0 8px 20px -4px var(--shadow-color);
     }
     .chip {
       background-color: var(--pill-bg);
       border: 1px solid var(--pill-border);
       color: var(--pill-text);
-      transition: all 0.2s ease;
+      min-height: 38px;
     }
     .chip.selected {
       background-color: var(--primary-color) !important;
       border-color: var(--primary-color) !important;
       color: #ffffff !important;
-      box-shadow: 0 4px 12px var(--shadow-color);
     }
-    .theme-action-btn {
+    .themed-btn {
       background: linear-gradient(135deg, var(--btn-grad-start), var(--btn-grad-end));
+      min-height: 52px;
     }
-    .form-input-themed {
-      background-color: var(--input-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-    }
-    .form-input-themed:focus {
-      border-color: var(--primary-color);
+    .modal-backdrop {
+      background-color: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
     }
   </style>
 </head>
-<body class="flex flex-col justify-between p-4 md:p-8 min-h-screen">
+<body class="flex flex-col justify-between p-3 sm:p-5 max-w-4xl mx-auto w-full">
 
-  <!-- Header Section -->
-  <header class="max-w-4xl mx-auto w-full flex items-center justify-between py-2 border-b border-slate-200 pb-4">
-    <div class="flex items-center gap-4">
-      <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-md border border-slate-200 bg-white p-1 flex items-center justify-center">
-        <img src="https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg" alt="BienERP Logo" class="w-full h-full object-cover rounded-xl" />
-      </div>
+  <!-- Tablet Clean Header -->
+  <header class="w-full flex items-center justify-between pb-3 border-b border-slate-200">
+    <div class="flex items-center gap-3">
+      <img src="https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg" alt="BienERP" class="w-11 h-11 rounded-xl object-cover border border-slate-200" />
       <div>
-        <div class="flex items-center gap-2">
-          <h1 class="text-xl md:text-2xl font-extrabold tracking-tight" style="color: var(--primary-color)">BienERP <span style="color: var(--accent-color)">HygieneIQ</span></h1>
-          <span class="px-2.5 py-0.5 text-[10px] font-extrabold tracking-wider uppercase rounded-full" style="background: var(--pill-bg); color: var(--primary-color); border: 1px solid var(--pill-border)">Kiosk v3.4</span>
-        </div>
-        <p class="text-xs flex items-center gap-1.5 mt-0.5" style="color: var(--text-muted)">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span id="locLabel">Phoenix Grand Mall &bull; Level 2 Washroom East</span>
+        <h1 class="text-lg sm:text-xl font-extrabold tracking-tight" style="color: var(--primary-color)">
+          BienERP <span style="color: var(--accent-color)">HygieneIQ</span>
+        </h1>
+        <p class="text-[11px] font-semibold flex items-center gap-1.5" style="color: var(--text-muted)">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="locLabel">Phoenix Grand Mall &bull; Level 2 East</span>
         </p>
       </div>
     </div>
-    <div class="hidden sm:flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-xl" style="background: var(--pill-bg); color: var(--primary-color); border: 1px solid var(--pill-border)">
-      <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path></svg>
-      Voice &amp; Cloud Ready
+    <div class="flex items-center gap-2">
+      <span class="px-2.5 py-1 text-[10px] font-extrabold uppercase rounded-full" style="background: var(--pill-bg); color: var(--primary-color); border: 1px solid var(--pill-border)">Touch Screen Live</span>
     </div>
   </header>
 
-  <!-- Main Interaction Area -->
-  <main class="max-w-4xl mx-auto w-full my-auto py-6">
-    <div class="kiosk-card rounded-3xl p-6 md:p-10 text-center relative overflow-hidden transition-all duration-300">
+  <!-- Interactive Question & Rating Section -->
+  <main class="my-auto py-3 w-full">
+    <div class="tablet-card rounded-2xl p-4 sm:p-6 text-center relative overflow-hidden">
       
-      <!-- Live Dynamic Question -->
-      <div class="mb-8">
-        <span class="text-xs font-bold uppercase tracking-widest px-3.5 py-1 rounded-full" style="background: var(--pill-bg); color: var(--primary-color); border: 1px solid var(--pill-border)">Patron Experience</span>
-        <h2 class="text-2xl md:text-4xl font-extrabold mt-3 mb-2" style="color: var(--text-main)">How clean was your experience today?</h2>
-        <p class="text-sm md:text-base font-medium" style="color: var(--text-muted)">Tap your rating below to let our facility care team know.</p>
+      <div class="mb-4">
+        <h2 class="text-xl sm:text-2xl font-extrabold" style="color: var(--text-main)">How clean was your experience today?</h2>
+        <p class="text-xs sm:text-sm font-medium mt-1" style="color: var(--text-muted)">Please tap an expression below to submit your rating.</p>
       </div>
 
-      <!-- Cinematic Avatar Mode Container -->
-      <div id="avatarRatingContainer" class="grid grid-cols-5 gap-3 md:gap-5 mb-8">
-        <!-- 1: Unclean -->
-        <button type="button" onclick="selectRating(1, 'Disastrous', '#ef4444', this)" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl">
-          <svg class="w-12 h-12 md:w-16 md:h-16 text-rose-500 drop-shadow-md" viewBox="0 0 64 64" fill="none">
+      <!-- 5-Tier Cinematic Avatars (Optimized for 7" Tablets) -->
+      <div class="grid grid-cols-5 gap-2 sm:gap-3 mb-4">
+        <!-- 1: Disastrous -->
+        <button type="button" onclick="selectRating(1, 'Disastrous', this)" class="avatar-btn flex flex-col items-center justify-center p-2 rounded-xl">
+          <svg class="w-10 h-10 sm:w-12 sm:h-12 text-rose-500" viewBox="0 0 64 64" fill="none">
             <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3.5" fill="rgba(244,63,94,0.06)"/>
             <path d="M22 26C24 24 28 24 30 26M34 26C36 24 40 24 42 26" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
             <circle cx="25" cy="27" r="2" fill="currentColor"/>
             <circle cx="39" cy="27" r="2" fill="currentColor"/>
             <path d="M24 44C27 38 37 38 40 44" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
           </svg>
-          <span class="mt-3 text-xs md:text-sm font-bold" style="color: var(--text-main)">Unclean</span>
+          <span class="mt-1.5 text-[11px] font-bold" style="color: var(--text-main)">Unclean</span>
         </button>
 
-        <!-- 2: Poor -->
-        <button type="button" onclick="selectRating(2, 'Needs Work', '#f97316', this)" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl">
-          <svg class="w-12 h-12 md:w-16 md:h-16 text-amber-500 drop-shadow-md" viewBox="0 0 64 64" fill="none">
+        <!-- 2: Needs Work -->
+        <button type="button" onclick="selectRating(2, 'Needs Work', this)" class="avatar-btn flex flex-col items-center justify-center p-2 rounded-xl">
+          <svg class="w-10 h-10 sm:w-12 sm:h-12 text-amber-500" viewBox="0 0 64 64" fill="none">
             <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3.5" fill="rgba(245,158,11,0.06)"/>
             <ellipse cx="24" cy="26" rx="2.5" ry="3" fill="currentColor"/>
             <ellipse cx="40" cy="26" rx="2.5" ry="3" fill="currentColor"/>
             <path d="M25 41L39 39" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
           </svg>
-          <span class="mt-3 text-xs md:text-sm font-bold" style="color: var(--text-main)">Poor</span>
+          <span class="mt-1.5 text-[11px] font-bold" style="color: var(--text-main)">Poor</span>
         </button>
 
         <!-- 3: Fair -->
-        <button type="button" onclick="selectRating(3, 'Fair', '#eab308', this)" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl">
-          <svg class="w-12 h-12 md:w-16 md:h-16 text-yellow-500 drop-shadow-md" viewBox="0 0 64 64" fill="none">
+        <button type="button" onclick="selectRating(3, 'Fair', this)" class="avatar-btn flex flex-col items-center justify-center p-2 rounded-xl">
+          <svg class="w-10 h-10 sm:w-12 sm:h-12 text-yellow-500" viewBox="0 0 64 64" fill="none">
             <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3.5" fill="rgba(250,204,21,0.06)"/>
             <circle cx="23" cy="27" r="2.8" fill="currentColor"/>
             <circle cx="41" cy="27" r="2.8" fill="currentColor"/>
             <line x1="23" y1="41" x2="41" y2="41" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
           </svg>
-          <span class="mt-3 text-xs md:text-sm font-bold" style="color: var(--text-main)">Fair</span>
+          <span class="mt-1.5 text-[11px] font-bold" style="color: var(--text-main)">Fair</span>
         </button>
 
         <!-- 4: Good -->
-        <button type="button" onclick="selectRating(4, 'Clean & Fresh', '#22c55e', this)" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl">
-          <svg class="w-12 h-12 md:w-16 md:h-16 text-emerald-500 drop-shadow-md" viewBox="0 0 64 64" fill="none">
+        <button type="button" onclick="selectRating(4, 'Clean & Fresh', this)" class="avatar-btn flex flex-col items-center justify-center p-2 rounded-xl">
+          <svg class="w-10 h-10 sm:w-12 sm:h-12 text-emerald-500" viewBox="0 0 64 64" fill="none">
             <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3.5" fill="rgba(52,211,153,0.06)"/>
             <path d="M21 27C21 24 26 24 26 27M38 27C38 24 43 24 43 27" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
             <path d="M23 37C27 43 37 43 41 37" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
           </svg>
-          <span class="mt-3 text-xs md:text-sm font-bold" style="color: var(--text-main)">Good</span>
+          <span class="mt-1.5 text-[11px] font-bold" style="color: var(--text-main)">Good</span>
         </button>
 
-        <!-- 5: Excellent -->
-        <button type="button" onclick="selectRating(5, 'Sparkling Clean', '#0ea5e9', this)" class="avatar-btn flex flex-col items-center justify-center p-3 md:p-5 rounded-2xl">
-          <svg class="w-12 h-12 md:w-16 md:h-16 text-sky-500 drop-shadow-md" viewBox="0 0 64 64" fill="none">
+        <!-- 5: Pristine -->
+        <button type="button" onclick="selectRating(5, 'Sparkling Clean', this)" class="avatar-btn flex flex-col items-center justify-center p-2 rounded-xl active">
+          <svg class="w-10 h-10 sm:w-12 sm:h-12 text-sky-500" viewBox="0 0 64 64" fill="none">
             <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3.5" fill="rgba(14,165,233,0.08)"/>
             <path d="M20 28C22 22 27 22 28 28M36 28C38 22 43 22 44 28" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
             <path d="M22 36C24 46 40 46 42 36Z" fill="currentColor"/>
             <path d="M12 16L14 20L18 22L14 24L12 28L10 24L6 22L10 20Z" fill="#f59e0b"/>
           </svg>
-          <span class="mt-3 text-xs md:text-sm font-bold" style="color: var(--text-main)">Pristine</span>
+          <span class="mt-1.5 text-[11px] font-bold" style="color: var(--text-main)">Pristine</span>
         </button>
       </div>
 
-      <!-- Quick Feedback Observation Tags -->
-      <div id="issuePillSection" class="mt-6 pt-6 border-t border-slate-200 text-left">
-        <p class="text-xs uppercase tracking-wider font-bold mb-3" style="color: var(--text-muted)">Quick Observations (Optional):</p>
-        <div class="flex flex-wrap gap-2" id="quickTags">
-          <button type="button" onclick="toggleTag(this, 'Wet Floors')" class="chip px-3.5 py-2 rounded-xl text-xs font-semibold">💦 Wet Floor</button>
-          <button type="button" onclick="toggleTag(this, 'Foul Odor')" class="chip px-3.5 py-2 rounded-xl text-xs font-semibold">💨 Foul Odor</button>
-          <button type="button" onclick="toggleTag(this, 'Soap Empty')" class="chip px-3.5 py-2 rounded-xl text-xs font-semibold">🧼 No Hand Soap</button>
-          <button type="button" onclick="toggleTag(this, 'Paper Towel Missing')" class="chip px-3.5 py-2 rounded-xl text-xs font-semibold">🧻 No Paper/Tissue</button>
-          <button type="button" onclick="toggleTag(this, 'Water Tap Leak')" class="chip px-3.5 py-2 rounded-xl text-xs font-semibold">🚰 Water Issue</button>
-          <button type="button" onclick="toggleTag(this, 'Pleasant Aroma')" class="chip px-3.5 py-2 rounded-xl text-xs font-semibold">🌸 Fresh Aroma</button>
-          <button type="button" onclick="toggleTag(this, 'Attendant Present')" class="chip px-3.5 py-2 rounded-xl text-xs font-semibold">👤 Helpful Staff</button>
+      <!-- Quick Issue Tags -->
+      <div class="pt-3 border-t border-slate-200 text-left">
+        <p class="text-[11px] font-bold uppercase tracking-wider mb-2" style="color: var(--text-muted)">Quick Feedback (Optional):</p>
+        <div class="flex flex-wrap gap-1.5">
+          <button type="button" onclick="toggleTag(this, 'Wet Floors')" class="chip px-3 py-1.5 rounded-lg text-xs font-semibold">💦 Wet Floor</button>
+          <button type="button" onclick="toggleTag(this, 'Foul Odor')" class="chip px-3 py-1.5 rounded-lg text-xs font-semibold">💨 Odor</button>
+          <button type="button" onclick="toggleTag(this, 'Soap Empty')" class="chip px-3 py-1.5 rounded-lg text-xs font-semibold">🧼 Soap Empty</button>
+          <button type="button" onclick="toggleTag(this, 'No Paper')" class="chip px-3 py-1.5 rounded-lg text-xs font-semibold">🧻 No Paper</button>
+          <button type="button" onclick="toggleTag(this, 'Water Issue')" class="chip px-3 py-1.5 rounded-lg text-xs font-semibold">🚰 Tap / Water</button>
+          <button type="button" onclick="toggleTag(this, 'Pleasant Aroma')" class="chip px-3 py-1.5 rounded-lg text-xs font-semibold">🌸 Fresh Smell</button>
         </div>
       </div>
 
-      <!-- Optional Contact Details Drawer Toggle -->
-      <div class="mt-6 pt-4 border-t border-slate-200">
-        <button type="button" onclick="toggleContactDrawer()" class="text-xs font-bold flex items-center justify-center gap-1.5 mx-auto transition-all" style="color: var(--primary-color)">
-          <span id="drawerToggleText">+ Add Optional Contact &amp; Detailed Note</span>
-          <svg id="drawerChevron" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      <!-- Optional Drawer Toggle -->
+      <div class="mt-3 pt-2 border-t border-slate-200">
+        <button type="button" onclick="toggleDrawer()" class="text-xs font-bold flex items-center justify-center gap-1 mx-auto py-1" style="color: var(--primary-color)">
+          <span id="drawerToggleTxt">+ Optional Contact Details &amp; Comments</span>
         </button>
-
-        <div id="contactDrawer" class="hidden mt-4 text-left grid grid-cols-1 md:grid-cols-3 gap-3 p-4 rounded-2xl border border-slate-200" style="background-color: var(--input-bg)">
+        <div id="contactDrawer" class="hidden mt-2 text-left grid grid-cols-1 sm:grid-cols-3 gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50">
           <div>
-            <label class="block text-[11px] font-bold mb-1" style="color: var(--text-muted)">Your Name (Optional)</label>
-            <input id="patronName" type="text" placeholder="e.g. Satyam Sharma" class="w-full form-input-themed rounded-xl px-3 py-2 text-xs focus:outline-none">
+            <label class="block text-[10px] font-bold mb-0.5 text-slate-500">Name</label>
+            <input id="pName" type="text" placeholder="Optional" class="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs">
           </div>
           <div>
-            <label class="block text-[11px] font-bold mb-1" style="color: var(--text-muted)">Contact Number (Optional)</label>
-            <input id="patronPhone" type="tel" placeholder="+91 98765 43210" class="w-full form-input-themed rounded-xl px-3 py-2 text-xs focus:outline-none">
+            <label class="block text-[10px] font-bold mb-0.5 text-slate-500">Phone</label>
+            <input id="pPhone" type="tel" placeholder="Optional" class="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs">
           </div>
           <div>
-            <label class="block text-[11px] font-bold mb-1" style="color: var(--text-muted)">Address / Mall Wing (Optional)</label>
-            <input id="patronAddress" type="text" placeholder="East Wing 2nd Floor" class="w-full form-input-themed rounded-xl px-3 py-2 text-xs focus:outline-none">
+            <label class="block text-[10px] font-bold mb-0.5 text-slate-500">Address / Wing</label>
+            <input id="pAddress" type="text" placeholder="Optional" class="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs">
           </div>
-          <div class="md:col-span-3 mt-1">
-            <label class="block text-[11px] font-bold mb-1" style="color: var(--text-muted)">Feedback Comments / Special Instruction (Optional)</label>
-            <textarea id="patronComment" rows="2" placeholder="Write any specific feedback or suggestion here..." class="w-full form-input-themed rounded-xl px-3 py-2 text-xs focus:outline-none resize-none"></textarea>
+          <div class="sm:col-span-3">
+            <textarea id="pComment" rows="1" placeholder="Write any additional note..." class="w-full bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-xs resize-none"></textarea>
           </div>
         </div>
       </div>
 
-      <!-- Action Button -->
-      <div class="mt-8 flex items-center justify-center">
-        <button id="submitBtn" onclick="submitFeedback()" class="theme-action-btn w-full md:w-auto px-10 py-4 rounded-2xl text-white font-extrabold text-base tracking-wide shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+      <!-- Submit Button -->
+      <div class="mt-4">
+        <button id="submitBtn" onclick="submitFeedback()" class="themed-btn w-full rounded-xl text-white font-extrabold text-sm tracking-wide shadow-md active:scale-95 flex items-center justify-center gap-2">
           <span>Submit Instant Feedback</span>
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
         </button>
       </div>
 
-      <!-- Thank You Overlay Modal -->
-      <div id="thankYouModal" class="hidden absolute inset-0 bg-white/95 backdrop-blur-md z-30 flex flex-col items-center justify-center p-6 text-center animate-fade-in">
-        <div class="w-20 h-20 rounded-full bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center mb-5 text-emerald-600">
-          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+      <!-- Thank You Overlay -->
+      <div id="thankYouModal" class="hidden absolute inset-0 bg-white/95 backdrop-blur-md z-30 flex flex-col items-center justify-center p-6 text-center">
+        <div class="w-16 h-16 rounded-full bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center mb-3 text-emerald-600">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
         </div>
-        <h3 class="text-3xl font-extrabold mb-2" style="color: var(--text-main)">Thank You!</h3>
-        <p class="text-base max-w-sm mb-4" style="color: var(--text-muted)">Your rating has been transmitted directly to our hygiene operations crew.</p>
-        <div class="text-xs font-bold px-4 py-1.5 rounded-full" style="background: var(--pill-bg); color: var(--primary-color); border: 1px solid var(--pill-border)">
-          Screen resets in <span id="countdown">4</span>s
+        <h3 class="text-2xl font-extrabold mb-1" style="color: var(--text-main)">Thank You!</h3>
+        <p class="text-xs text-slate-500 mb-2">Transmitted directly to facility operations.</p>
+        <div class="text-[11px] font-bold px-3 py-1 rounded-full" style="background: var(--pill-bg); color: var(--primary-color)">
+          Resetting in <span id="cdNum">4</span>s
         </div>
       </div>
 
     </div>
   </main>
 
-  <!-- Footer Navigation -->
-  <footer class="max-w-4xl mx-auto w-full text-center text-xs pt-3 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2" style="color: var(--text-muted)">
-    <div>
-      Powered by <strong class="font-bold" style="color: var(--text-main)">BienERP Facility Suite</strong> &bull; Enterprise Kiosk
+  <!-- Clean Bottom Bar with Staff Check-in Button (No Admin/Reports links) -->
+  <footer class="w-full pt-2 border-t border-slate-200 flex items-center justify-between text-xs" style="color: var(--text-muted)">
+    <div class="text-[11px]">
+      Powered by <strong style="color: var(--text-main)">BienERP</strong> &bull; Facility Intelligence
     </div>
-    <div class="flex items-center gap-4">
-      <a href="reports.html" class="hover:underline font-semibold" style="color: var(--primary-color)">Reports Portal</a>
-      <span>&bull;</span>
-      <a href="admin.html" class="hover:underline font-semibold" style="color: var(--primary-color)">Admin &amp; AMC</a>
-    </div>
+    
+    <!-- Housekeeping / Staff Punch In Button -->
+    <button onclick="openStaffModal()" class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 font-bold text-[11px] text-slate-700 shadow-sm active:scale-95">
+      <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+      Housekeeping Punch
+    </button>
   </footer>
 
+  <!-- Housekeeping Attendance & Check-in Modal -->
+  <div id="staffModal" class="hidden fixed inset-0 modal-backdrop z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl p-5 max-w-sm w-full shadow-2xl border border-slate-200 text-left">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+          <h3 class="font-extrabold text-sm text-slate-900">Staff Haziri &amp; Service Punch</h3>
+        </div>
+        <button onclick="closeStaffModal()" class="text-slate-400 hover:text-slate-700 font-bold text-lg">&times;</button>
+      </div>
+
+      <div class="space-y-3 my-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">Select Staff Member</label>
+          <select id="staffNameSelect" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 font-semibold text-slate-800">
+            <!-- Dynamically populated from Staff Roster -->
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">Activity / Punch Type</label>
+          <select id="staffActionType" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 font-semibold text-slate-800">
+            <option value="Shift Punch In">🟢 Duty Start (Shift Punch In)</option>
+            <option value="Cleaning Completed">🧹 Deep Cleaning Completed</option>
+            <option value="Inspection Check">📋 Supervisor Inspection Pass</option>
+            <option value="Shift Punch Out">🔴 Shift Punch Out</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pt-2">
+        <button onclick="closeStaffModal()" class="w-1/2 py-2 rounded-lg border border-slate-300 text-xs font-bold text-slate-600">Cancel</button>
+        <button onclick="submitStaffPunch()" class="w-1/2 py-2 rounded-lg bg-blue-600 text-white text-xs font-bold shadow-md active:scale-95">Record Punch</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Live Google Apps Script Endpoint
     const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBoFYUaSD4y4h1resqxeuyDIgBj9FEVseWDRPexhYRGhZkySXZeAvnT-HY_TQKmvB1/exec";
 
     let selectedRatingValue = 5;
     let selectedRatingLabel = "Sparkling Clean";
     let selectedTags = [];
 
-    // Preload Speech Engine
+    // Preload speech
     if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-      };
+      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
     }
 
-    // High-Fidelity Voice Synthesizer
     function speakVoice(text, isPositive) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'en-US';
-        if (isPositive) {
-          utterance.pitch = 1.15;
-          utterance.rate = 1.0;
-        } else {
-          utterance.pitch = 0.9;
-          utterance.rate = 0.92;
-        }
+        utterance.pitch = isPositive ? 1.15 : 0.9;
+        utterance.rate = isPositive ? 1.0 : 0.92;
         window.speechSynthesis.speak(utterance);
       }
     }
 
-    function selectRating(val, label, colorHex, btnElement) {
+    function selectRating(val, label, btn) {
       selectedRatingValue = val;
       selectedRatingLabel = label;
-      
-      const buttons = document.querySelectorAll('.avatar-btn');
-      buttons.forEach(b => b.classList.remove('active'));
-      if (btnElement) {
-        btnElement.classList.add('active');
-      }
+      document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
 
       if (val >= 4) {
         speakVoice("Thank you!", true);
@@ -346,51 +350,34 @@
       }
     }
 
-    function toggleContactDrawer() {
-      const drawer = document.getElementById('contactDrawer');
-      const text = document.getElementById('drawerToggleText');
-      const chevron = document.getElementById('drawerChevron');
-      
-      if (drawer.classList.contains('hidden')) {
-        drawer.classList.remove('hidden');
-        text.textContent = "- Hide Optional Contact & Detailed Note";
-        chevron.classList.add('rotate-180');
-      } else {
-        drawer.classList.add('hidden');
-        text.textContent = "+ Add Optional Contact & Detailed Note";
-        chevron.classList.remove('rotate-180');
-      }
+    function toggleDrawer() {
+      const d = document.getElementById('contactDrawer');
+      d.classList.toggle('hidden');
     }
 
     async function submitFeedback() {
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `
-        <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg> Transmitting...
-      `;
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerHTML = "Transmitting...";
 
       const payload = {
+        type: "feedback",
         timestamp: new Date().toISOString(),
         score: selectedRatingValue,
         label: selectedRatingLabel,
         issues: selectedTags.join(", ") || "None",
-        name: document.getElementById('patronName').value.trim() || "Anonymous",
-        phone: document.getElementById('patronPhone').value.trim() || "Not Provided",
-        address: document.getElementById('patronAddress').value.trim() || "Phoenix Mall L2 East",
-        comments: document.getElementById('patronComment').value.trim() || "No additional comments",
-        system: "BienERP Washroom Suite v3.4"
+        name: document.getElementById('pName').value.trim() || "Anonymous",
+        phone: document.getElementById('pPhone').value.trim() || "Not Provided",
+        address: document.getElementById('pAddress').value.trim() || "Phoenix Mall L2 East",
+        comments: document.getElementById('pComment').value.trim() || "No comments",
+        system: "BienERP Tablet Suite"
       };
 
       try {
         let registry = JSON.parse(localStorage.getItem('bienerp_feedback_data') || '[]');
         registry.unshift(payload);
         localStorage.setItem('bienerp_feedback_data', JSON.stringify(registry));
-      } catch (err) {
-        console.error("Local storage error:", err);
-      }
+      } catch(e) {}
 
       try {
         await fetch(APPSCRIPT_URL, {
@@ -399,59 +386,112 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-      } catch (networkErr) {
-        console.warn("Apps Script Webhook queued/offline:", networkErr);
-      }
+      } catch (err) {}
 
       const modal = document.getElementById('thankYouModal');
       modal.classList.remove('hidden');
-      let countdownSec = 4;
-      const cdEl = document.getElementById('countdown');
-      cdEl.textContent = countdownSec;
+      let s = 4;
+      const cd = document.getElementById('cdNum');
+      cd.textContent = s;
 
       const timer = setInterval(() => {
-        countdownSec--;
-        if (countdownSec > 0) {
-          cdEl.textContent = countdownSec;
+        s--;
+        if (s > 0) {
+          cd.textContent = s;
         } else {
           clearInterval(timer);
-          resetForm();
+          resetUI();
         }
       }, 1000);
     }
 
-    function resetForm() {
-      document.getElementById('patronName').value = '';
-      document.getElementById('patronPhone').value = '';
-      document.getElementById('patronAddress').value = '';
-      document.getElementById('patronComment').value = '';
-      
+    function resetUI() {
+      document.getElementById('pName').value = '';
+      document.getElementById('pPhone').value = '';
+      document.getElementById('pAddress').value = '';
+      document.getElementById('pComment').value = '';
       selectedTags = [];
       document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
       document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('active'));
       selectedRatingValue = 5;
       selectedRatingLabel = "Sparkling Clean";
-      
       document.getElementById('thankYouModal').classList.add('hidden');
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = `<span>Submit Instant Feedback</span>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>`;
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = false;
+      btn.innerHTML = `<span>Submit Instant Feedback</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>`;
     }
 
-    // Apply Admin Theme on Startup
-    window.addEventListener('DOMContentLoaded', () => {
+    // Staff Attendance Handlers
+    function openStaffModal() {
+      const select = document.getElementById('staffNameSelect');
+      const roster = JSON.parse(localStorage.getItem('bienerp_staff_roster') || '[]');
+      
+      if (roster.length === 0) {
+        select.innerHTML = `
+          <option value="Ramesh Kumar (Supervisor)">Ramesh Kumar (Supervisor)</option>
+          <option value="Sunita Devi (Attendant)">Sunita Devi (Attendant)</option>
+          <option value="Amit Yadav (Attendant)">Amit Yadav (Attendant)</option>
+        `;
+      } else {
+        select.innerHTML = roster.map(s => `<option value="${s.name} (${s.role})">${s.name} (${s.role})</option>`).join('');
+      }
+
+      document.getElementById('staffModal').classList.remove('hidden');
+    }
+
+    function closeStaffModal() {
+      document.getElementById('staffModal').classList.add('hidden');
+    }
+
+    async function submitStaffPunch() {
+      const staffMember = document.getElementById('staffNameSelect').value;
+      const action = document.getElementById('staffActionType').value;
+      
+      const punchData = {
+        type: "attendance",
+        timestamp: new Date().toISOString(),
+        staff: staffMember,
+        action: action,
+        zone: document.getElementById('locLabel').textContent
+      };
+
+      // Save locally for reports
+      let punches = JSON.parse(localStorage.getItem('bienerp_staff_punches') || '[]');
+      punches.unshift(punchData);
+      localStorage.setItem('bienerp_staff_punches', JSON.stringify(punches));
+
+      // Transmit to Google Sheet
+      try {
+        await fetch(APPSCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(punchData)
+        });
+      } catch (e) {}
+
+      speakVoice("Punch recorded. Thank you!", true);
+      alert("Attendance / Service Record Logged Successfully!");
+      closeStaffModal();
+    }
+
+    // Realtime Global Theme & Config Sync
+    function syncTheme() {
       const savedConfig = localStorage.getItem('bienerp_admin_config');
       let appliedTheme = "theme-blue";
       if (savedConfig) {
         try {
           const cfg = JSON.parse(savedConfig);
-          if (cfg.locationName) document.getElementById('locLabel').textContent = cfg.locationName;
           if (cfg.theme) appliedTheme = cfg.theme;
+          if (cfg.locationName) document.getElementById('locLabel').textContent = cfg.locationName;
         } catch(e) {}
       }
       document.documentElement.setAttribute('data-theme', appliedTheme);
-    });
+    }
+
+    window.addEventListener('storage', syncTheme);
+    window.addEventListener('DOMContentLoaded', syncTheme);
   </script>
 </body>
 </html>
