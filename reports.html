@@ -3,38 +3,97 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BienERP | Hygiene & Facility Analytics Reports</title>
+  <title>BienERP | Hygiene &amp; Facility Analytics Reports</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    /* Theme 1: White, Light Blue & Dark Blue (Default) */
+    :root[data-theme="theme-blue"] {
+      --bg-body: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary-color: #1659b7;
+      --accent-color: #0284c7;
+      --pill-bg: #f0f9ff;
+      --pill-border: #bae6fd;
+      --pill-text: #0369a1;
+      --table-hover: #f1f5f9;
+      --btn-grad-start: #1659b7;
+      --btn-grad-end: #0284c7;
+    }
+
+    /* Theme 2: White, Grey & Black Monochrome */
+    :root[data-theme="theme-mono"] {
+      --bg-body: #ffffff;
+      --card-bg: #fafafa;
+      --card-border: #e4e4e7;
+      --text-main: #09090b;
+      --text-muted: #71717a;
+      --primary-color: #18181b;
+      --accent-color: #52525b;
+      --pill-bg: #f4f4f5;
+      --pill-border: #d4d4d8;
+      --pill-text: #27272a;
+      --table-hover: #f4f4f5;
+      --btn-grad-start: #18181b;
+      --btn-grad-end: #3f3f46;
+    }
+
+    /* Theme 3: White, Dark Red & Maroon */
+    :root[data-theme="theme-maroon"] {
+      --bg-body: #fffafa;
+      --card-bg: #ffffff;
+      --card-border: #fecdd3;
+      --text-main: #4c0519;
+      --text-muted: #881337;
+      --primary-color: #7f1d1d;
+      --accent-color: #b91c1c;
+      --pill-bg: #fff1f2;
+      --pill-border: #fecdd3;
+      --pill-text: #9f1239;
+      --table-hover: #fff1f2;
+      --btn-grad-start: #7f1d1d;
+      --btn-grad-end: #b91c1c;
+    }
+
     * { font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background: #060913; color: #f1f5f9; }
-    .glass-panel {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(16px);
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .report-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04);
+    }
+    .themed-btn {
+      background: linear-gradient(135deg, var(--btn-grad-start), var(--btn-grad-end));
     }
   </style>
 </head>
-<body class="min-h-screen p-4 md:p-8">
+<body class="p-4 md:p-8">
 
   <!-- Manager Header -->
-  <header class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pb-6 border-b border-slate-800 gap-4">
+  <header class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between pb-6 border-b border-slate-200 gap-4">
     <div class="flex items-center gap-4">
-      <img src="https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg" alt="Logo" class="w-12 h-12 rounded-xl object-cover border border-slate-700" />
+      <img src="https://i.pinimg.com/736x/1e/92/47/1e92477089887de2026d27304ceb2ef8.jpg" alt="Logo" class="w-12 h-12 rounded-xl object-cover border border-slate-200" />
       <div>
-        <h1 class="text-2xl font-bold text-white">Facility Intelligence &amp; Reports</h1>
-        <p class="text-xs text-slate-400">BienERP Washroom Operations Command &bull; Real-time Sheet Synced</p>
+        <h1 class="text-2xl font-bold" style="color: var(--primary-color)">Facility Intelligence &amp; Reports</h1>
+        <p class="text-xs" style="color: var(--text-muted)">BienERP Washroom Operations Command &bull; Real-time Synced</p>
       </div>
     </div>
     <div class="flex items-center gap-3">
-      <a href="index.html" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 transition-all">Launch Kiosk</a>
-      <a href="admin.html" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 transition-all">Admin Master</a>
-      <button onclick="exportCSV()" class="px-4 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg transition-all flex items-center gap-1.5">
+      <a href="index.html" class="px-4 py-2 text-xs font-bold rounded-xl border border-slate-200 hover:bg-slate-100 transition-all" style="color: var(--text-main); background: var(--card-bg)">Launch Kiosk</a>
+      <a href="admin.html" class="px-4 py-2 text-xs font-bold rounded-xl border border-slate-200 hover:bg-slate-100 transition-all" style="color: var(--text-main); background: var(--card-bg)">Admin Settings</a>
+      <button onclick="exportCSV()" class="px-4 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition-all flex items-center gap-1.5">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
         Download CSV
       </button>
-      <button onclick="window.print()" class="px-4 py-2 text-xs font-bold rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-lg transition-all">
+      <button onclick="window.print()" class="themed-btn px-4 py-2 text-xs font-bold rounded-xl text-white shadow-md transition-all">
         Print Report
       </button>
     </div>
@@ -44,36 +103,36 @@
     
     <!-- KPI Summary Row -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <div class="glass-panel p-5 rounded-2xl">
-        <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Total Submissions</span>
-        <div class="text-3xl font-extrabold text-white mt-2" id="kpiTotal">0</div>
-        <p class="text-xs text-emerald-400 mt-1">100% Captured in Sheet</p>
+      <div class="report-card p-5 rounded-2xl">
+        <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-muted)">Total Submissions</span>
+        <div class="text-3xl font-extrabold mt-2" id="kpiTotal" style="color: var(--primary-color)">0</div>
+        <p class="text-xs text-emerald-600 font-semibold mt-1">100% Captured to Sheet</p>
       </div>
-      <div class="glass-panel p-5 rounded-2xl">
-        <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">CSAT Score Index</span>
-        <div class="text-3xl font-extrabold text-sky-400 mt-2" id="kpiCSAT">0.0 / 5</div>
-        <p class="text-xs text-slate-400 mt-1">Weighted Satisfaction</p>
+      <div class="report-card p-5 rounded-2xl">
+        <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-muted)">CSAT Score Index</span>
+        <div class="text-3xl font-extrabold mt-2" id="kpiCSAT" style="color: var(--accent-color)">0.0 / 5</div>
+        <p class="text-xs font-semibold mt-1" style="color: var(--text-muted)">Weighted Hygiene Avg</p>
       </div>
-      <div class="glass-panel p-5 rounded-2xl">
-        <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Positive Ratio</span>
-        <div class="text-3xl font-extrabold text-emerald-400 mt-2" id="kpiPositive">0%</div>
-        <p class="text-xs text-slate-400 mt-1">4 &amp; 5 Star Ratings</p>
+      <div class="report-card p-5 rounded-2xl">
+        <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-muted)">Positive Ratio</span>
+        <div class="text-3xl font-extrabold text-emerald-600 mt-2" id="kpiPositive">0%</div>
+        <p class="text-xs font-semibold mt-1" style="color: var(--text-muted)">4 &amp; 5 Star Ratings</p>
       </div>
-      <div class="glass-panel p-5 rounded-2xl">
-        <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Critical Escalations</span>
-        <div class="text-3xl font-extrabold text-rose-500 mt-2" id="kpiEscalations">0</div>
-        <p class="text-xs text-rose-400 mt-1">Score ≤ 2 alerts</p>
+      <div class="report-card p-5 rounded-2xl">
+        <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-muted)">Critical Escalations</span>
+        <div class="text-3xl font-extrabold text-rose-600 mt-2" id="kpiEscalations">0</div>
+        <p class="text-xs text-rose-500 font-semibold mt-1">Score ≤ 2 Alerts</p>
       </div>
     </div>
 
     <!-- Active Feed Table -->
-    <div class="glass-panel rounded-2xl p-6 overflow-hidden">
+    <div class="report-card rounded-2xl p-6 overflow-hidden">
       <div class="flex items-center justify-between mb-4">
         <div>
-          <h2 class="text-lg font-bold text-white">Live Feedback Logs</h2>
-          <p class="text-xs text-slate-400">Shows all logged feedbacks (Stored simultaneously on Local Cache and Google Sheet)</p>
+          <h2 class="text-lg font-bold" style="color: var(--text-main)">Live Feedback Activity Logs</h2>
+          <p class="text-xs" style="color: var(--text-muted)">Synchronized with Google Apps Script Webhook and Local Storage</p>
         </div>
-        <button onclick="loadFeedbackData()" class="text-xs text-sky-400 hover:text-sky-300 font-bold flex items-center gap-1">
+        <button onclick="loadFeedbackData()" class="text-xs font-bold flex items-center gap-1 hover:underline" style="color: var(--primary-color)">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
           Refresh Feed
         </button>
@@ -82,49 +141,49 @@
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs border-collapse">
           <thead>
-            <tr class="border-b border-slate-800 text-slate-400 uppercase tracking-wider font-semibold">
+            <tr class="border-b border-slate-200 uppercase tracking-wider font-bold" style="color: var(--text-muted)">
               <th class="py-3 px-3">Timestamp</th>
               <th class="py-3 px-3">Rating Score</th>
-              <th class="py-3 px-3">Identified Issues</th>
+              <th class="py-3 px-3">Issues</th>
               <th class="py-3 px-3">Patron Name</th>
               <th class="py-3 px-3">Contact</th>
-              <th class="py-3 px-3">Mall Location / Address</th>
+              <th class="py-3 px-3">Location / Address</th>
               <th class="py-3 px-3">Comments</th>
             </tr>
           </thead>
-          <tbody id="feedTableBody" class="divide-y divide-slate-800/60 text-slate-200">
+          <tbody id="feedTableBody" class="divide-y divide-slate-100">
             <tr>
-              <td colspan="7" class="py-6 text-center text-slate-500">No feedback submissions found.</td>
+              <td colspan="7" class="py-6 text-center text-slate-400">No feedback submissions found yet.</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Attendant Management Card -->
-    <div class="glass-panel rounded-2xl p-6">
-      <h2 class="text-lg font-bold text-white mb-2">On-Duty Housekeeping Staff Roster</h2>
+    <!-- Housekeeping Roster -->
+    <div class="report-card rounded-2xl p-6">
+      <h2 class="text-lg font-bold mb-2" style="color: var(--text-main)">On-Duty Housekeeping Staff Roster</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-xs">
-        <div class="p-3 bg-slate-900/70 border border-slate-800 rounded-xl flex items-center justify-between">
+        <div class="p-3 border border-slate-200 rounded-xl flex items-center justify-between" style="background: var(--bg-body)">
           <div>
-            <div class="font-bold text-white">Ramesh Kumar (Supervisor)</div>
-            <div class="text-slate-400 text-[11px]">Shift: Morning (07:00 - 15:00)</div>
+            <div class="font-bold" style="color: var(--text-main)">Ramesh Kumar (Supervisor)</div>
+            <div class="text-[11px]" style="color: var(--text-muted)">Shift: Morning (07:00 - 15:00)</div>
           </div>
-          <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">Active</span>
+          <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">Active</span>
         </div>
-        <div class="p-3 bg-slate-900/70 border border-slate-800 rounded-xl flex items-center justify-between">
+        <div class="p-3 border border-slate-200 rounded-xl flex items-center justify-between" style="background: var(--bg-body)">
           <div>
-            <div class="font-bold text-white">Sunita Devi (Attendant)</div>
-            <div class="text-slate-400 text-[11px]">Shift: Morning (07:00 - 15:00)</div>
+            <div class="font-bold" style="color: var(--text-main)">Sunita Devi (Attendant)</div>
+            <div class="text-[11px]" style="color: var(--text-muted)">Shift: Morning (07:00 - 15:00)</div>
           </div>
-          <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">Active</span>
+          <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">Active</span>
         </div>
-        <div class="p-3 bg-slate-900/70 border border-slate-800 rounded-xl flex items-center justify-between">
+        <div class="p-3 border border-slate-200 rounded-xl flex items-center justify-between" style="background: var(--bg-body)">
           <div>
-            <div class="font-bold text-white">Amit Yadav (Attendant)</div>
-            <div class="text-slate-400 text-[11px]">Shift: Evening (15:00 - 23:00)</div>
+            <div class="font-bold" style="color: var(--text-main)">Amit Yadav (Attendant)</div>
+            <div class="text-[11px]" style="color: var(--text-muted)">Shift: Evening (15:00 - 23:00)</div>
           </div>
-          <span class="px-2 py-0.5 rounded-full bg-slate-700/50 text-slate-400 border border-slate-600/30 font-bold">Upcoming</span>
+          <span class="px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 text-[10px] font-bold">Upcoming</span>
         </div>
       </div>
     </div>
@@ -136,7 +195,7 @@
       const tbody = document.getElementById('feedTableBody');
 
       if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-500">No feedback submissions found yet. Submit from kiosk index.html.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400">No feedback submissions found yet. Submit from kiosk index.html.</td></tr>`;
         document.getElementById('kpiTotal').textContent = '0';
         document.getElementById('kpiCSAT').textContent = '0.0 / 5';
         document.getElementById('kpiPositive').textContent = '0%';
@@ -154,28 +213,27 @@
         if (score >= 4) positiveCount++;
         if (score <= 2) criticalCount++;
 
-        let badgeClass = "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
-        if (score <= 2) badgeClass = "bg-rose-500/10 text-rose-400 border-rose-500/20";
-        else if (score === 3) badgeClass = "bg-yellow-500/10 text-yellow-400 border-yellow-500/20";
+        let badgeClass = "bg-emerald-100 text-emerald-800 border-emerald-300";
+        if (score <= 2) badgeClass = "bg-rose-100 text-rose-800 border-rose-300";
+        else if (score === 3) badgeClass = "bg-yellow-100 text-yellow-800 border-yellow-300";
 
         return `
-          <tr class="hover:bg-slate-800/40 transition-colors">
-            <td class="py-3 px-3 text-slate-400">${new Date(item.timestamp).toLocaleString()}</td>
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="py-3 px-3 text-slate-500">${new Date(item.timestamp).toLocaleString()}</td>
             <td class="py-3 px-3">
               <span class="px-2.5 py-1 rounded-lg border font-bold text-xs ${badgeClass}">
                 ★ ${score}/5 &bull; ${item.label}
               </span>
             </td>
-            <td class="py-3 px-3 text-slate-300 font-medium">${item.issues || 'None'}</td>
-            <td class="py-3 px-3 font-semibold text-white">${item.name || 'Anonymous'}</td>
-            <td class="py-3 px-3 text-slate-400 font-mono">${item.phone || '-'}</td>
-            <td class="py-3 px-3 text-slate-400">${item.address || '-'}</td>
-            <td class="py-3 px-3 text-slate-300 max-w-xs truncate" title="${item.comments}">${item.comments || '-'}</td>
+            <td class="py-3 px-3 font-medium text-slate-800">${item.issues || 'None'}</td>
+            <td class="py-3 px-3 font-semibold text-slate-900">${item.name || 'Anonymous'}</td>
+            <td class="py-3 px-3 text-slate-500 font-mono">${item.phone || '-'}</td>
+            <td class="py-3 px-3 text-slate-500">${item.address || '-'}</td>
+            <td class="py-3 px-3 text-slate-700 max-w-xs truncate" title="${item.comments}">${item.comments || '-'}</td>
           </tr>
         `;
       }).join('');
 
-      // KPI Computations
       const avg = (totalScore / data.length).toFixed(1);
       const posPct = Math.round((positiveCount / data.length) * 100);
 
@@ -213,7 +271,19 @@
       document.body.removeChild(link);
     }
 
-    window.addEventListener('DOMContentLoaded', loadFeedbackData);
+    // Apply Admin Theme on Startup
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedConfig = localStorage.getItem('bienerp_admin_config');
+      let appliedTheme = "theme-blue";
+      if (savedConfig) {
+        try {
+          const cfg = JSON.parse(savedConfig);
+          if (cfg.theme) appliedTheme = cfg.theme;
+        } catch(e) {}
+      }
+      document.documentElement.setAttribute('data-theme', appliedTheme);
+      loadFeedbackData();
+    });
   </script>
 </body>
 </html>
